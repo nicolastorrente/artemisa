@@ -1,0 +1,91 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>tacs</groupId>
+  <artifactId>grupo4-2014</artifactId>
+  <packaging>war</packaging>
+  <version>0.0.1</version>
+  <name>grupo4-2014 Maven Webapp</name>
+  
+  <repositories>
+    <repository>
+      <id>Actual</id>
+	  <url>http://maven.apache.org</url>
+    </repository>
+    <repository>
+      <id>central</id>
+      <url>http://repo1.maven.org/maven2</url>
+    </repository>
+  </repositories>
+  
+  <properties>
+	<java-version>1.6</java-version>
+	<org.springframework-version>4.0.0.RELEASE</org.springframework-version>
+	<org.aspectj-version>1.7.4</org.aspectj-version>
+	<org.slf4j-version>1.7.5</org.slf4j-version>
+	<jackson.databind-version>2.2.3</jackson.databind-version>
+  </properties>
+  
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.10</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+	  <groupId>com.restfb</groupId>
+	  <artifactId>restfb</artifactId>
+	  <version>1.6.14</version>
+	</dependency>
+	<!-- Jackson -->
+	<dependency>
+		<groupId>com.fasterxml.jackson.core</groupId>
+		<artifactId>jackson-databind</artifactId>
+		<version>${jackson.databind-version}</version>
+	</dependency>
+	<!-- Spring -->
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-context</artifactId>
+		<version>${org.springframework-version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-webmvc</artifactId>
+		<version>${org.springframework-version}</version>
+	</dependency>
+  </dependencies>
+  
+  <build>
+    <finalName>grupo4-2014</finalName>
+    <plugins>
+		<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.5.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+					<compilerArgument>-Xlint:all</compilerArgument>
+					<showWarnings>true</showWarnings>
+					<showDeprecation>true</showDeprecation>
+				</configuration>
+			</plugin>
+		<plugin>
+			<groupId>org.mortbay.jetty</groupId>
+			<artifactId>maven-jetty-plugin</artifactId>
+			<version>6.1.22</version>
+			<configuration>
+				<connectors>
+					<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+						<port>9090</port>
+						<maxIdleTime>60000</maxIdleTime>
+					</connector>
+				</connectors>
+				<jetty-config>jetty.xml</jetty-config>
+			</configuration>
+		</plugin>
+	</plugins>
+  </build>
+</project>
