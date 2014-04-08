@@ -14,7 +14,8 @@ public class MockListService {
 	public List_G4 createMockList(String id){
 		List_G4 list = new List_G4();
 		list.setName("jack");
-		list.setId(Long.getLong(id));
+		list.setMockStatus("getting");
+		list.setId(Long.parseLong(id));
 		Item_G4 item = new Item_G4();
 		item.setLabel("Item1");
 		item.setId(234l);
@@ -26,6 +27,7 @@ public class MockListService {
 		List<List_G4> col = new ArrayList<List_G4>();
 		List_G4 list = new List_G4();
 		list.setName("jack");
+		list.setMockStatus("getting");
 		list.setId(235235l);
 		Item_G4 item = new Item_G4();
 		item.setLabel("Item1");
@@ -34,6 +36,7 @@ public class MockListService {
 		col.add(list);
 		list = new List_G4();
 		list.setName("sparrow");
+		list.setMockStatus("getting");
 		list.setId(346767l);
 		item = new Item_G4();
 		item.setLabel("Item2");

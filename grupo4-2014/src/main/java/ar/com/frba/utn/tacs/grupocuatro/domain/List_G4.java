@@ -10,6 +10,8 @@ public class List_G4 extends BusinessObject{
 	private String name;
 	private List<Item_G4> items;
 	
+	private String mockStatus;
+	
 	public List_G4() {
 		super();
 		this.items = new ArrayList<Item_G4>();
@@ -33,6 +35,14 @@ public class List_G4 extends BusinessObject{
 	
 	public void addItem(Item_G4 item){
 		this.items.add(item);
+	}
+
+	public String getMockStatus() {
+		return mockStatus;
+	}
+
+	public void setMockStatus(String mockStatus) {
+		this.mockStatus = mockStatus;
 	}
 	
 }
