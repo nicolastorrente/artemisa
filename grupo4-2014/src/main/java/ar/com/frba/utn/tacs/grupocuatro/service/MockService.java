@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import ar.com.frba.utn.tacs.grupocuatro.domain.Item_G4;
 import ar.com.frba.utn.tacs.grupocuatro.domain.List_G4;
+import ar.com.frba.utn.tacs.grupocuatro.domain.User_G4;
 
 @Service
 public class MockService {
@@ -58,6 +59,28 @@ public class MockService {
 		list.add(this.createMockItem("12341", "labelItem1"));
 		list.add(this.createMockItem("12342", "labelItem2"));
 		list.add(this.createMockItem("12343", "labelItem3"));
+		return list;
+	}
+
+	public User_G4 createMockUser(String id) {
+		return this.createMockUser(id, "Angus");
+	}
+	
+	private User_G4 createMockUser(String id, String name) {
+		User_G4 user = new User_G4();
+		user.setId(Long.parseLong(id));
+		user.setMockStatus("got");
+		user.setUsername(name);
+		user.setLists(this.createMockListOfList());
+		return user;
+	}
+
+	public List<User_G4> createMockListOfUsers() {
+		List<User_G4> list = new ArrayList<User_G4>();
+		list.add(this.createMockUser("12341", "Moe"));
+		list.add(this.createMockUser("12342", "Larry"));
+		list.add(this.createMockUser("12343", "Shemp"));
+		list.add(this.createMockUser("12344", "Curly"));
 		return list;
 	}
 }
