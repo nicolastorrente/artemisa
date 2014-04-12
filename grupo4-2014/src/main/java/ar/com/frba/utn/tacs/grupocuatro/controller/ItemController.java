@@ -11,46 +11,41 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ar.com.frba.utn.tacs.grupocuatro.domain.Item_G4;
-import ar.com.frba.utn.tacs.grupocuatro.domain.List_G4;
 import ar.com.frba.utn.tacs.grupocuatro.service.MockService;
 
 @Controller
-@RequestMapping("/lists")
-public class ListController {
+@RequestMapping("/lists/{ID_LIST}/items")
+public class ItemController {
 	
 	@Autowired
 	private MockService mockService;
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
-	public @ResponseBody List_G4 getList(@PathVariable String id){
-		return mockService.createMockList(id);
+	public @ResponseBody Item_G4 getItem(@PathVariable String id){
+		return mockService.createMockItem(id);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public @ResponseBody List<List_G4> getAllLists(){
-		return mockService.createMockListOfList();
+	public @ResponseBody List<Item_G4> getAllLists(){
+		return mockService.createMockListOfItem();
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public @ResponseBody List_G4 createList(@RequestBody List_G4 list){
-		list.setMockStatus("List created");
-		for(Item_G4 item : list.getItems())
-			item.setMockStatus("Item created");
-		return list;
+	public @ResponseBody Item_G4 createItem(@RequestBody Item_G4 item){
+		item.setMockStatus("Item created");
+		return item;
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT)
-	public @ResponseBody List_G4 updateList(@RequestBody List_G4 list){
-		list.setMockStatus("List updated");
-		for(Item_G4 item : list.getItems())
-			item.setMockStatus("Item updated");
-		return list;
+	public @ResponseBody Item_G4 updateList(@RequestBody Item_G4 item){
+		item.setMockStatus("Item updated");
+		return item;
 	}
 	
 	@RequestMapping(method = RequestMethod.DELETE)
-	public @ResponseBody List_G4 deleteList(@RequestBody List_G4 list){
-		List_G4 deleted = new List_G4();
-		deleted.setMockStatus("List deleted");
+	public @ResponseBody Item_G4 deleteList(@RequestBody Item_G4 item){
+		Item_G4 deleted = new Item_G4();
+		deleted.setMockStatus("Item deleted");
 		return deleted;
 	}
 
