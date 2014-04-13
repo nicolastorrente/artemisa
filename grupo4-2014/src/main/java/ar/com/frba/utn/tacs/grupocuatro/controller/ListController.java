@@ -12,23 +12,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import ar.com.frba.utn.tacs.grupocuatro.domain.Item_G4;
 import ar.com.frba.utn.tacs.grupocuatro.domain.List_G4;
-import ar.com.frba.utn.tacs.grupocuatro.service.MockService;
+import ar.com.frba.utn.tacs.grupocuatro.service.MockListService;
 
 @Controller
 @RequestMapping("/lists")
 public class ListController {
 	
 	@Autowired
-	private MockService mockService;
+	private MockListService service;
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
 	public @ResponseBody List_G4 getList(@PathVariable String id){
-		return mockService.createMockList(id);
+		return service.getById(id);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public @ResponseBody List<List_G4> getAllLists(){
-		return mockService.createMockListOfList();
+		return service.getAll();
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
