@@ -1,0 +1,1 @@
+El proyecto grupo4 se debe ejecutar con el comando mvn spring-boot:run
