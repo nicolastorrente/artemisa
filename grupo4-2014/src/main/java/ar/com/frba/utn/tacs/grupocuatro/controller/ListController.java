@@ -1,6 +1,9 @@
 package ar.com.frba.utn.tacs.grupocuatro.controller;
 
 import java.util.List;
+//Experimento
+import java.util.ArrayList;
+//Experimento
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +21,10 @@ import ar.com.frba.utn.tacs.grupocuatro.service.ListService;
 @RequestMapping("/lists")
 public class ListController {
 	
+	//Experimento
+	ArrayList<List_G4> listasEnMemoria = new ArrayList<List_G4>();
+	//Experimento
+	
 	@Autowired
 	private ListService service;
 	
@@ -33,6 +40,23 @@ public class ListController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody List_G4 createList(@RequestBody List_G4 list){
+		
+		//Experimento
+		boolean repetido = false;
+				
+		for(List_G4 elemento : listasEnMemoria){
+			if(elemento.getName().equals(list.getName()))
+				repetido = true;
+		}
+				
+		if(repetido){
+			System.out.println("Rechazar");
+		}
+		else{
+			listasEnMemoria.add(list);
+		}
+		//Experimento
+		
 		list.setMockStatus("List created");
 		for(Item_G4 item : list.getItems())
 			item.setMockStatus("Item created");
