@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,12 +14,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ar.com.frba.utn.tacs.grupocuatro.domain.Item_G4;
 import ar.com.frba.utn.tacs.grupocuatro.domain.List_G4;
 import ar.com.frba.utn.tacs.grupocuatro.service.ListService;
+import ar.com.frba.utn.tacs.grupocuatro.service.PersistenciaListas;
 
 @Controller
 @RequestMapping("/lists")
 public class ListController {
 	
 	ArrayList<List_G4> listasEnMemoria = new ArrayList<List_G4>();
+	PersistenciaListas Plist = new PersistenciaListas();
 	
 	@Autowired
 	private ListService service;
@@ -42,7 +42,7 @@ public class ListController {
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public @ResponseBody List<List_G4> getAllLists(){
-		return listasEnMemoria;
+		return Plist.ReturnLists();
 	}
 	
 	/**
@@ -51,21 +51,8 @@ public class ListController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public @ResponseBody ResponseEntity<String> createList(@RequestBody List_G4 list){
-		boolean repetido = false;
-				
-		for(List_G4 elemento : listasEnMemoria){
-			if(elemento.getName().equals(list.getName()))
-				repetido = true;
-		}
-		
-		if(repetido){
-			return new ResponseEntity<String>("Rechazado.", HttpStatus.NOT_FOUND);
-		}
-		else{
-			listasEnMemoria.add(list);
-			return new ResponseEntity<String>("Elemento agregado.", HttpStatus.CREATED);
-		}
+	public @ResponseBody void createList(@RequestBody List_G4 list){
+		Plist.AddListToMemory(list);
 	}
 
 	/**
