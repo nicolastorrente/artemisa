@@ -1,11 +1,11 @@
 package ar.com.frba.utn.tacs.grupocuatro.controller;
 
 import java.util.List;
-//Experimento
 import java.util.ArrayList;
-//Experimento
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,48 +21,58 @@ import ar.com.frba.utn.tacs.grupocuatro.service.ListService;
 @RequestMapping("/lists")
 public class ListController {
 	
-	//Experimento
 	ArrayList<List_G4> listasEnMemoria = new ArrayList<List_G4>();
-	//Experimento
 	
 	@Autowired
 	private ListService service;
 	
+	/**
+	 * GET LIST
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
 	public @ResponseBody List_G4 getList(@PathVariable String id){
 		return service.getById(id);
 	}
 	
+	/**
+	 * LIST
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public @ResponseBody List<List_G4> getAllLists(){
-		return service.getAll();
+		return listasEnMemoria;
 	}
 	
+	/**
+	 * CREATE LIST
+	 * @param list
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public @ResponseBody List_G4 createList(@RequestBody List_G4 list){
-		
-		//Experimento
+	public @ResponseBody ResponseEntity<String> createList(@RequestBody List_G4 list){
 		boolean repetido = false;
 				
 		for(List_G4 elemento : listasEnMemoria){
 			if(elemento.getName().equals(list.getName()))
 				repetido = true;
 		}
-				
+		
 		if(repetido){
-			System.out.println("Rechazar");
+			return new ResponseEntity<String>("Rechazado.", HttpStatus.NOT_FOUND);
 		}
 		else{
 			listasEnMemoria.add(list);
+			return new ResponseEntity<String>("Elemento agregado.", HttpStatus.CREATED);
 		}
-		//Experimento
-		
-		list.setMockStatus("List created");
-		for(Item_G4 item : list.getItems())
-			item.setMockStatus("Item created");
-		return list;
 	}
-	
+
+	/**
+	 * UPDATE LIST
+	 * @param list
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.PUT)
 	public @ResponseBody List_G4 updateList(@RequestBody List_G4 list){
 		list.setMockStatus("List updated");
@@ -71,6 +81,11 @@ public class ListController {
 		return list;
 	}
 	
+	/**
+	 * DELETE LIST
+	 * @param list
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.DELETE)
 	public @ResponseBody List_G4 deleteList(@RequestBody List_G4 list){
 		List_G4 deleted = new List_G4();
