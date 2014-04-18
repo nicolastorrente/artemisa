@@ -1,30 +1,19 @@
 package ar.com.frba.utn.tacs.grupocuatro.service;
 
 import java.util.ArrayList;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import ar.com.frba.utn.tacs.grupocuatro.domain.List_G4;
 
 
 
-public class PersistenciaListas {
+public class PersistenciaMemoria implements Persistencia {
 	
 	ArrayList<List_G4> listasEnMemoria = new ArrayList<List_G4>();
 	
-	/**
-	 * RETURN LISTS
-	 * @return
-	 */
 	public ArrayList<List_G4> ReturnLists(){
 		return listasEnMemoria;
 	}
-	
-	/**
-	 * ADD LIST TO MEMORY
-	 * @param list
-	 * @return
-	 */
-	public ResponseEntity<String> AddListToMemory(List_G4 list){
+
+	public boolean AddListToMemory(List_G4 list){
 		boolean repetido = false;
 		
 		for(List_G4 elemento : listasEnMemoria){
@@ -33,11 +22,11 @@ public class PersistenciaListas {
 		}
 		
 		if(repetido){
-			return new ResponseEntity<String>("Rechazado.", HttpStatus.NOT_FOUND);
+			return false;
 		}
 		else{
 			listasEnMemoria.add(list);
-			return new ResponseEntity<String>("Elemento agregado.", HttpStatus.CREATED);
+			return true;
 		}
 	}
 }
