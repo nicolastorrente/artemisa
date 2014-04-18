@@ -34,30 +34,17 @@ public class UserController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody User_G4 createUser(@RequestBody User_G4 user){
-		user.setMockStatus("User created");
-		for(List_G4 list : user.getLists()){
-			list.setMockStatus("List created");
-			for(Item_G4 item : list.getItems())
-				item.setMockStatus("Item created");
-		}
 		return user;
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT)
 	public @ResponseBody User_G4 updateUser(@RequestBody User_G4 user){
-		user.setMockStatus("User updated");
-		for(List_G4 list : user.getLists()){
-			list.setMockStatus("List created");
-			for(Item_G4 item : list.getItems())
-				item.setMockStatus("Item updated");
-		}
 		return user;
 	}
 	
 	@RequestMapping(method = RequestMethod.DELETE)
 	public @ResponseBody User_G4 deleteList(@RequestBody User_G4 user){
 		User_G4 deleted = new User_G4();
-		deleted.setMockStatus("User deleted");
 		return deleted;
 	}
 

@@ -32,20 +32,17 @@ public class ItemController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody Item_G4 createItem(@RequestBody Item_G4 item){
-		item.setMockStatus("Item created");
 		return item;
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT)
 	public @ResponseBody Item_G4 updateList(@RequestBody Item_G4 item){
-		item.setMockStatus("Item updated");
 		return item;
 	}
 	
 	@RequestMapping(method = RequestMethod.DELETE)
 	public @ResponseBody Item_G4 deleteList(@RequestBody Item_G4 item){
 		Item_G4 deleted = new Item_G4();
-		deleted.setMockStatus("Item deleted");
 		return deleted;
 	}
 
