@@ -1,10 +1,42 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head> 
-    <title>TACS 2014: Grupo 4</title> 
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-</head>
-<body>
-    <p th:text="'Grupo 4 te da la bienvenida, la hora actual es: ' + ${date} + '!'" />
-</body>
+<!DOCTYPE html>
+<html>
+	<head th:substituteby="header :: copy">
+	<style type='text/css'>
+	</style>
+	</head>
+	<body>
+		<div id='content' class='row'>
+	      <div class='col-md-3'>
+	        <div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h1 class="panel-title">Listas existentes</h1>
+			  </div>
+			  <div class="panel-body" style="min-height:400px">
+			    <p><h4>listas aqui</h4></p>
+			  </div>
+		  	</div>
+	      </div>
+	      <div class='col-md-5'>
+	        <div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h1 class="panel-title">Listas del Usuario...</h1>
+			  </div>
+			  <div class="panel-body" style="min-height:400px">
+			    <p><h4>listas aqui</h4></p>
+			  </div>
+		  	</div>
+	      </div>
+	      <div class='col-md-4'>
+	        <div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h1 class="panel-title">Item de la lista...</h1>
+			  </div>
+			  <div class="panel-body" style="min-height:400px">
+			    <p><h4>Items aqui</h4></p>
+			  </div>
+		  	</div>
+	      </div>
+		</div>
+	    <div th:substituteby="footer :: copy"></div>
+	</body>
 </html>

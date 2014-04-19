@@ -5,7 +5,7 @@
 	<groupId>tacs</groupId>
 	<artifactId>grupo4</artifactId>
 	<version>0.0.1</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>grupo4</name>
 	<url>http://maven.apache.org</url>
