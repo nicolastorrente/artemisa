@@ -20,7 +20,20 @@ public interface ListService {
 	 */
 	public boolean create(List_G4 list);
 
-	public List_G4 update(List_G4 list);
+	/**
+	 * Actualiza una lista
+	 * 
+	 * @param id de la lista
+	 * @param list nuevos atributos de la lista
+	 * @return verdadero si actualizo la lista.
+	 */
+	public boolean update(long id, List_G4 list);
 
-	public List_G4 delete(List_G4 list);
+	/**
+	 * Borra una lista
+	 * 
+	 * @param id de la lista a borrar
+	 * @return verdadero si borró la lista.
+	 */
+	public boolean delete(long id);
 }

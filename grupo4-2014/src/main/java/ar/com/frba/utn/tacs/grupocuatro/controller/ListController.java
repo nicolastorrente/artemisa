@@ -46,15 +46,23 @@ public class ListController {
 		}
 	}
 
-	@RequestMapping(method = RequestMethod.PUT)
-	public @ResponseBody List_G4 updateList(@RequestBody List_G4 list){
-		return list;
+	@RequestMapping(method = RequestMethod.PUT, value = "/{id}")
+	public @ResponseBody ResponseEntity<List_G4> updateList(@PathVariable Long id, @RequestBody List_G4 list){
+		if(service.update(id, list)){
+			return new ResponseEntity<List_G4>(list, HttpStatus.CREATED);
+		}else{
+			return new ResponseEntity<List_G4>(HttpStatus.NOT_FOUND);
+		}
 	}
 	
-	@RequestMapping(method = RequestMethod.DELETE)
-	public @ResponseBody List_G4 deleteList(@RequestBody List_G4 list){
-		List_G4 deleted = new List_G4();
-		return deleted;
+
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
+	public @ResponseBody ResponseEntity<List_G4> deleteList(@PathVariable Long id){
+		if(service.delete(id)){
+			return new ResponseEntity<List_G4>(HttpStatus.NO_CONTENT);
+		}else{
+			return new ResponseEntity<List_G4>(HttpStatus.NOT_FOUND);
+		}
 	}
 
 }
