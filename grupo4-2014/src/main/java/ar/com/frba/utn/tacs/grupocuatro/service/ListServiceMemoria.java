@@ -1,9 +1,7 @@
 package ar.com.frba.utn.tacs.grupocuatro.service;
 
 import java.util.ArrayList;
-
 import org.springframework.stereotype.Service;
-
 import ar.com.frba.utn.tacs.grupocuatro.domain.List_G4;
 
 @Service
