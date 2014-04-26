@@ -7,10 +7,11 @@ public class Item_G4 extends BusinessObject{
 	private String label;
 	private Long votes = 0l;
 
-	public Item_G4() {
+	public Item_G4(String label) {
 		super();
+		this.label = label;
 	}
-	
+
 	public void incVotes(){
 		this.votes++;
 	}

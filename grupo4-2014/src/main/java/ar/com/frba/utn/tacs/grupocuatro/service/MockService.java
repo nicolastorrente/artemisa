@@ -42,7 +42,7 @@ public class MockService {
 	}
 	
 	private Item_G4 createMockItem(String id, String label) {
-		Item_G4 item = new Item_G4();
+		Item_G4 item = new Item_G4("");
 		item.setId(Long.parseLong(id));
 		item.setLabel(label);
 		item.incVotes();
@@ -63,7 +63,7 @@ public class MockService {
 	}
 	
 	private User_G4 createMockUser(String id, String name) {
-		User_G4 user = new User_G4();
+		User_G4 user = new User_G4("");
 		user.setId(Long.parseLong(id));
 		user.setUsername(name);
 		user.setLists(this.createMockListOfList());

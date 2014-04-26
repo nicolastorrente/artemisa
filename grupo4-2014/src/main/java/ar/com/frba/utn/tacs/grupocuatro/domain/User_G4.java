@@ -10,9 +10,10 @@ public class User_G4 extends BusinessObject{
 	private String username;
 	private List<List_G4> lists;
 	
-	public User_G4() {
+	public User_G4(String username) {
 		super();
 		this.lists = new ArrayList<List_G4>();
+		this.username = username;
 	}
 
 	public String getUsername() {

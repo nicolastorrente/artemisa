@@ -42,7 +42,7 @@ public class ItemController {
 	
 	@RequestMapping(method = RequestMethod.DELETE)
 	public @ResponseBody Item_G4 deleteList(@RequestBody Item_G4 item){
-		Item_G4 deleted = new Item_G4();
+		Item_G4 deleted = new Item_G4("");
 		return deleted;
 	}
 

@@ -10,6 +10,12 @@ public class UserServiceMemoria implements UserService {
 	long lastId = 0;
 	ArrayList<User_G4> UsuariosEnMemoria = new ArrayList<User_G4>();
 	
+	public UserServiceMemoria() {
+		this.create(new User_G4("Moe"));
+		this.create(new User_G4("Chad"));
+		this.create(new User_G4("John"));
+	}
+
 	@Override
 	public User_G4 getById(Long id) {
 		for(User_G4 elemento : UsuariosEnMemoria){
