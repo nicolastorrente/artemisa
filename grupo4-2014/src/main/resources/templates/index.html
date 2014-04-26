@@ -4,37 +4,17 @@
 	<style type='text/css'>
 	</style>
 	</head>
-	<body onload="cargaamigos();return false;">
+	<body onload="loadFriends();return false;">
 		<div id='content' class='row'>
 	      <div class='col-md-3'>
 	        <div class="panel panel-default">
 			  <div class="panel-heading">
 			    <h1 class="panel-title">Usuarios</h1>
-			    
 			  </div>
 			  <div class="panel-body" style="min-height:400px">
-			    <table>
-           			<thead>
-                		<tr>
-                	    	<th width="40%">ID</th>
-                    		<th width="40%">Name</th>
-                		</tr>
-            		</thead>
-            		<tbody  class='tbody-users'>
-            		</tbody>
-        		</table>
-        		<script id="rowTemplate" type="text/html">
-        	    	<tr>
-        	    	    <td width="40%">
-        	    	        {{ID}}
-        	    	    </td>
-        	    	    <td width="40%">
-        	    	        {{Name}}
-        	    	    </td>
-        	    	    <td>
-        	    	        <button onclick="cargalistas();return false;">ver listas</button>
-        	    	    </td>
-        	    	</tr>
+			  	<ul id="listUsers" class="list-group"/>
+        		<script id="rowTemplateUsers" type="text/html">
+        	    	<a href="#userLists" class="list-group-item">{{USER}}</a>
         		</script>
 			  </div>
 		  	</div>
@@ -44,29 +24,10 @@
 			  <div class="panel-heading">
 			    <h1 class="panel-title">Listas del Usuario...</h1>
 			  </div>
-			  <div class="panel-body-2" style="min-height:400px">
-			    <table>
-           			<thead>
-                		<tr>
-                	    	<th width="40%">Lista ID</th>
-                    		<th width="40%">Lista Name</th>
-                		</tr>
-            		</thead>
-            		<tbody class='tbody-lists'>
-            		</tbody>
-        		</table>
+			  <div class="panel-body" style="min-height:400px">
+				<ul id="listOfList" class="list-group"/>
         		<script id="rowTemplateLists" type="text/html">
-        	    	<tr>
-        	    	    <td width="40%">
-        	    	        {{ListaID}}
-        	    	    </td>
-        	    	    <td width="40%">
-        	    	        {{ListaName}}
-        	    	    </td>
-        	    	    <td>
-        	    	        <button onclick="cargaitems()">ver items</button>
-        	    	    </td>
-        	    	</tr>
+        	    	<a href="#itemsList" class="list-group-item">{{LIST}}</a>
         		</script>
 			  </div>
 		  	</div>
@@ -77,73 +38,16 @@
 			    <h1 class="panel-title">Item de la lista...</h1>
 			  </div>
 			  <div class="panel-body" style="min-height:400px">
-			     <table>
-           			<thead>
-                		<tr>
-                	    	<th width="40%">Item ID</th>
-                    		<th width="40%">Item Label</th>
-                		</tr>
-            		</thead>
-            		<tbody class='tbody-items'>
-            		</tbody>
-        		</table>
+			    <ul id="listOfItems" class="list-group"/>
         		<script id="rowTemplateItems" type="text/html">
-        	    	<tr>
-        	    	    <td width="40%">
-        	    	        {{ItemID}}
-        	    	    </td>
-        	    	    <td width="40%">
-        	    	        {{ItemLabel}}
-        	    	    </td>
-        	    	    <td>
-        	    	        <button onclick="">Me gusta!</button>
-        	    	    </td>
-        	    	</tr>
+        	    	<a href="#incItem" class="list-group-item"><span class="badge">{{VOTES}}</span>{{ITEM}}</a>
         		</script>
 			  </div>
 		  	</div>
 	      </div>
 		</div>
 	    <div th:substituteby="footer :: copy"></div>
-	    <script>
-	    	function cargaamigos() {
-  				$.ajax({
-    			    type: "GET",
-        			url: "/users",
-        			success: function(ajaxresult){
-        				for(var k in ajaxresult) {
- 							var row = $("#rowTemplate").html().replace("{{ID}}", ajaxresult[k].id).replace("{{Name}}", ajaxresult[k].username)
-    						$(".tbody-users").append(row)
-						}
-					}
-				});
-			}
-			function cargalistas() {
-  				$.ajax({
-    			    type: "GET",
-        			url: "/lists",
-        			success: function(ajaxresult){
-        				for(var k in ajaxresult) {
- 							var row = $("#rowTemplateLists").html().replace("{{ListaID}}", ajaxresult[k].id).replace("{{ListaName}}", ajaxresult[k].name)
-    						$(".tbody-lists").append(row)
-        				
-						}
-					}
-				});
-			}
-			function cargaitems() {
-  				$.ajax({
-    			    type: "GET",
-        			url: "lists/12341/items",
-        			success: function(ajaxresult){
-        				for(var k in ajaxresult) {
-        					var row = $("#rowTemplateItems").html().replace("{{ItemID}}", ajaxresult[k].id).replace("{{ItemLabel}}", ajaxresult[k].label)
- 							$(".tbody-items").append(row)
- 						}
-					}
-				});
-			}
-		</script>
-	    <script src="Scripts/jquery-2.1.0.min.js"></script>
 	</body>
+	<script src="/resources/js/jquery-2.1.0.min.js"></script>
+	<script src="/resources/js/services.js"></script>
 </html>
