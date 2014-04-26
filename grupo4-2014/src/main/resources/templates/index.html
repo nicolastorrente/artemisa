@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head th:substituteby="header :: copy">
+	<style type='text/css'>
+	</style>
+	</head>
+	<body onload="loadFriends();return false;">
+		<div id='content' class='row'>
+	      <div class='col-md-3'>
+	        <div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h1 class="panel-title">Usuarios</h1>
+			  </div>
+			  <div class="panel-body" style="min-height:400px">
+			  	<ul id="listUsers" class="list-group"/>
+        		<script id="rowTemplateUsers" type="text/html">
+        	    	<a href="#userLists" class="list-group-item">{{USER}}</a>
+        		</script>
+			  </div>
+		  	</div>
+	      </div>
+	      <div class='col-md-5'>
+	        <div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h1 class="panel-title">Listas del Usuario...</h1>
+			  </div>
+			  <div class="panel-body" style="min-height:400px">
+				<ul id="listOfList" class="list-group"/>
+        		<script id="rowTemplateLists" type="text/html">
+        	    	<a href="#itemsList" class="list-group-item">{{LIST}}</a>
+        		</script>
+			  </div>
+		  	</div>
+	      </div>
+	      <div class='col-md-4'>
+	        <div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h1 class="panel-title">Item de la lista...</h1>
+			  </div>
+			  <div class="panel-body" style="min-height:400px">
+			    <ul id="listOfItems" class="list-group"/>
+        		<script id="rowTemplateItems" type="text/html">
+        	    	<a href="#incItem" class="list-group-item"><span class="badge">{{VOTES}}</span>{{ITEM}}</a>
+        		</script>
+			  </div>
+		  	</div>
+	      </div>
+		</div>
+	    <div th:substituteby="footer :: copy"></div>
+	</body>
+	<script src="/resources/js/jquery-2.1.0.min.js"></script>
+	<script src="/resources/js/services.js"></script>
+</html>
