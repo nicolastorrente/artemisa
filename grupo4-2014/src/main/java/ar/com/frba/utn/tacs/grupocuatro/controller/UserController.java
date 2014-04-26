@@ -1,64 +1,100 @@
 package ar.com.frba.utn.tacs.grupocuatro.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import ar.com.frba.utn.tacs.grupocuatro.domain.Item_G4;
-import ar.com.frba.utn.tacs.grupocuatro.domain.List_G4;
 import ar.com.frba.utn.tacs.grupocuatro.domain.User_G4;
-import ar.com.frba.utn.tacs.grupocuatro.service.MockService;
+import ar.com.frba.utn.tacs.grupocuatro.service.UserService;
 
 @Controller
 @RequestMapping("/users")
 public class UserController {
-	
+
 	@Autowired
-	private MockService mockService;
-	
-	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
-	public @ResponseBody User_G4 getUser(@PathVariable String id){
-		return mockService.createMockUser(id);
-	}
-	
-	@RequestMapping(method = RequestMethod.GET)
-	public @ResponseBody List<User_G4> getAllUsers(){
-		return mockService.createMockListOfUsers();
-	}
-	
+	private UserService service;
+
+	/**
+	 * CREATE USER
+	 * 
+	 * @param user
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public @ResponseBody User_G4 createUser(@RequestBody User_G4 user){
-		user.setMockStatus("User created");
-		for(List_G4 list : user.getLists()){
-			list.setMockStatus("List created");
-			for(Item_G4 item : list.getItems())
-				item.setMockStatus("Item created");
+	public @ResponseBody
+	ResponseEntity<User_G4> createUser(@RequestBody User_G4 user) {
+		if (service.create(user)) {
+			return new ResponseEntity<User_G4>(user, HttpStatus.CREATED);
+		} else {
+			return new ResponseEntity<User_G4>(HttpStatus.BAD_REQUEST);
 		}
-		return user;
-	}
-	
-	@RequestMapping(method = RequestMethod.PUT)
-	public @ResponseBody User_G4 updateUser(@RequestBody User_G4 user){
-		user.setMockStatus("User updated");
-		for(List_G4 list : user.getLists()){
-			list.setMockStatus("List created");
-			for(Item_G4 item : list.getItems())
-				item.setMockStatus("Item updated");
-		}
-		return user;
-	}
-	
-	@RequestMapping(method = RequestMethod.DELETE)
-	public @ResponseBody User_G4 deleteList(@RequestBody User_G4 user){
-		User_G4 deleted = new User_G4();
-		deleted.setMockStatus("User deleted");
-		return deleted;
 	}
 
+	/**
+	 * GET USER
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
+	public @ResponseBody
+	ResponseEntity<User_G4> getUser(@PathVariable Long id) {
+		User_G4 user = service.getById(id);
+		if (user != null) {
+			return new ResponseEntity<User_G4>(user, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<User_G4>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	/**
+	 * GET ALL USERS
+	 * 
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.GET)
+	public @ResponseBody
+	List<User_G4> getAllUsers() {
+		return service.getAll();
+	}
+
+	/**
+	 * DELETE LIST
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
+	public @ResponseBody
+	ResponseEntity<User_G4> deleteList(@RequestBody Long id) {
+		if (service.delete(id)) {
+			return new ResponseEntity<User_G4>(HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<User_G4>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	/**
+	 * UPDATE USER
+	 * 
+	 * @param id
+	 * @param user
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.PUT, value = "/{id}")
+	public @ResponseBody
+	ResponseEntity<User_G4> updateUser(@PathVariable Long id,
+			@RequestBody User_G4 user) {
+		if (service.update(id, user)) {
+			return new ResponseEntity<User_G4>(user, HttpStatus.CREATED);
+		} else {
+			return new ResponseEntity<User_G4>(HttpStatus.NOT_FOUND);
+		}
+	}
 }

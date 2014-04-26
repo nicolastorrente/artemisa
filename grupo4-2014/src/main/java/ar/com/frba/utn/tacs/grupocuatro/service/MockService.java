@@ -2,9 +2,7 @@ package ar.com.frba.utn.tacs.grupocuatro.service;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.stereotype.Service;
-
 import ar.com.frba.utn.tacs.grupocuatro.domain.Item_G4;
 import ar.com.frba.utn.tacs.grupocuatro.domain.List_G4;
 import ar.com.frba.utn.tacs.grupocuatro.domain.User_G4;
@@ -19,7 +17,6 @@ public class MockService {
 	public List_G4 createMockList(String id, String name, int count){
 		List_G4 list = new List_G4();
 		list.setName(name);
-		list.setMockStatus("got");
 		list.setId(Long.parseLong(id));
 		list.setItems(this.createMockListItem(count));
 		return list;
@@ -47,7 +44,6 @@ public class MockService {
 	private Item_G4 createMockItem(String id, String label) {
 		Item_G4 item = new Item_G4();
 		item.setId(Long.parseLong(id));
-		item.setMockStatus("got");
 		item.setLabel(label);
 		item.incVotes();
 		item.incVotes();
@@ -69,7 +65,6 @@ public class MockService {
 	private User_G4 createMockUser(String id, String name) {
 		User_G4 user = new User_G4();
 		user.setId(Long.parseLong(id));
-		user.setMockStatus("got");
 		user.setUsername(name);
 		user.setLists(this.createMockListOfList());
 		return user;
