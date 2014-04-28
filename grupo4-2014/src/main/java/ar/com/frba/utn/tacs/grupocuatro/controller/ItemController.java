@@ -14,7 +14,7 @@ import ar.com.frba.utn.tacs.grupocuatro.domain.Item_G4;
 import ar.com.frba.utn.tacs.grupocuatro.service.MockService;
 
 @Controller
-@RequestMapping("/lists/{ID_LIST}/items")
+@RequestMapping("/user/{ID_USER}/lists/{ID_LIST}/items")
 public class ItemController {
 	
 	@Autowired
@@ -26,7 +26,7 @@ public class ItemController {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public @ResponseBody List<Item_G4> getAllLists(){
+	public @ResponseBody List<Item_G4> getAllItems(){
 		return mockService.createMockListOfItem();
 	}
 	

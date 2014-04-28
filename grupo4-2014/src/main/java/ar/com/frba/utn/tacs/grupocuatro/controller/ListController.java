@@ -14,7 +14,7 @@ import ar.com.frba.utn.tacs.grupocuatro.domain.List_G4;
 import ar.com.frba.utn.tacs.grupocuatro.service.ListService;
 
 @Controller
-@RequestMapping("/lists")
+@RequestMapping("/user/{ID_USER}/lists")
 public class ListController {
 
 	@Autowired

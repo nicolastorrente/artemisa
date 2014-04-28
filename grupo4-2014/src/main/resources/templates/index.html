@@ -4,7 +4,7 @@
 	<style type='text/css'>
 	</style>
 	</head>
-	<body onload="loadFriends();return false;">
+	<body onload="loadFriends(true);return false;">
 		<div id='content' class='row'>
 	      <div class='col-md-3'>
 	        <div class="panel panel-default">
@@ -16,18 +16,24 @@
         		<script id="rowTemplateUsers" type="text/html">
         	    	<a href="#userLists" class="list-group-item">{{USER}}</a>
         		</script>
+        		<script id="rowTemplateUsersActive" type="text/html">
+        	    	<a href="#userLists" class="list-group-item active">{{USER}}</a>
+        		</script>
 			  </div>
 		  	</div>
 	      </div>
 	      <div class='col-md-5'>
 	        <div class="panel panel-default">
 			  <div class="panel-heading">
-			    <h1 class="panel-title">Listas del Usuario...</h1>
+			    <h1 id="labelPanelLists" class="panel-title">Listas del usuario...</h1>
 			  </div>
 			  <div class="panel-body" style="min-height:400px">
 				<ul id="listOfList" class="list-group"/>
         		<script id="rowTemplateLists" type="text/html">
         	    	<a href="#itemsList" class="list-group-item">{{LIST}}</a>
+        		</script>
+        		<script id="rowTemplateListsActive" type="text/html">
+        	    	<a href="#itemsList" class="list-group-item active">{{LIST}}</a>
         		</script>
 			  </div>
 		  	</div>
@@ -35,7 +41,7 @@
 	      <div class='col-md-4'>
 	        <div class="panel panel-default">
 			  <div class="panel-heading">
-			    <h1 class="panel-title">Item de la lista...</h1>
+			    <h1 id="labelPanelItems" class="panel-title">Item de la lista...</h1>
 			  </div>
 			  <div class="panel-body" style="min-height:400px">
 			    <ul id="listOfItems" class="list-group"/>
@@ -49,5 +55,6 @@
 	    <div th:substituteby="footer :: copy"></div>
 	</body>
 	<script src="/resources/js/jquery-2.1.0.min.js"></script>
+	<script src="/resources/js/application.js"></script>
 	<script src="/resources/js/services.js"></script>
 </html>

@@ -1,16 +1,19 @@
 package ar.com.frba.utn.tacs.grupocuatro.service;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import ar.com.frba.utn.tacs.grupocuatro.domain.User_G4;
 
 @Service
 public class UserServiceMemoria implements UserService {
 	
-	long lastId = 0;
-	ArrayList<User_G4> UsuariosEnMemoria = new ArrayList<User_G4>();
+	private long lastId = 0;
+	private List<User_G4> users = new ArrayList<User_G4>();
 	
 	public UserServiceMemoria() {
+		this.create(new User_G4("Yo"));
 		this.create(new User_G4("Moe"));
 		this.create(new User_G4("Chad"));
 		this.create(new User_G4("John"));
@@ -18,7 +21,7 @@ public class UserServiceMemoria implements UserService {
 
 	@Override
 	public User_G4 getById(Long id) {
-		for(User_G4 elemento : UsuariosEnMemoria){
+		for(User_G4 elemento : users){
 			if(elemento.getId().equals(id))
 				return elemento;
 		}
@@ -26,8 +29,8 @@ public class UserServiceMemoria implements UserService {
 	}
 	
 	@Override
-	public ArrayList<User_G4> getAll() {
-		return UsuariosEnMemoria;
+	public List<User_G4> getAll() {
+		return users;
 	}
 	
 	@Override
@@ -36,13 +39,13 @@ public class UserServiceMemoria implements UserService {
 		if(!exists){
 			lastId++;
 			user.setId(lastId);
-			UsuariosEnMemoria.add(user);
+			users.add(user);
 		}
 		return !exists;
 	}
 	
 	public boolean exists(User_G4 user){
-		for(User_G4 elemento : UsuariosEnMemoria){
+		for(User_G4 elemento : users){
 			if(elemento.getUsername().equals(user.getUsername()))
 				return true;
 		}
@@ -53,7 +56,7 @@ public class UserServiceMemoria implements UserService {
 	public boolean delete(long id) {
 		User_G4 user = this.getById(id);
 		if(user!=null){
-			UsuariosEnMemoria.remove(user);
+			users.remove(user);
 		}
 		//Duevuelve verdadero si la borró
 		return (user!=null);
@@ -65,7 +68,7 @@ public class UserServiceMemoria implements UserService {
 		if(u!=null){
 			//No debería cambiar el ID
 			user.setId(id);
-			UsuariosEnMemoria.set(UsuariosEnMemoria.indexOf(u), user);
+			users.set(users.indexOf(u), user);
 		}
 		//Duevuelve verdadero si la actualizó
 		return (u!=null);
