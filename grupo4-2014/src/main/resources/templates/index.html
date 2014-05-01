@@ -20,6 +20,27 @@
         	    	<a href="#userLists" class="list-group-item active">{{USER}}</a>
         		</script>
         		<div id="Content"></div>
+        		<!-- Modal usuario -->
+        		<a class="btn btn-block btn-primary" href="#user" data-toggle="modal"><h4>Agregar usuario</h4></a>
+			    <div class="modal fade" id="user" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			        <div class="modal-dialog">
+			            <div class="modal-content">
+			                <div class="modal-header modal-header-primary">
+			                    <h1><i class="glyphicon glyphicon-user"></i> Agregar usuario</h1>
+			                </div>
+			                <div class="modal-body">
+			                
+			                <input name="username" id="username" type="text" maxlength="15" placeholder="usuario" class="form-control"/>
+			                
+			                </div>
+			                <div class="modal-footer">
+			                	<button id="AgregarUsuario" type="submit" class="btn btn-primary pull-left" data-dismiss="modal">Agregar</button>
+			                	<button type="submit" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			    <!-- Modal usuario -->
 			  </div>
 		  	</div>
 	      </div>
@@ -29,6 +50,26 @@
 			    <h1 id="labelPanelLists" class="panel-title">Listas del usuario...</h1>
 			  </div>
 			  <div class="panel-body" style="min-height:400px">
+			  	<!-- Modal listas -->
+			    <div class="modal fade" id="lista" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			        <div class="modal-dialog">
+			            <div class="modal-content">
+			                <div class="modal-header modal-header-primary">
+			                    <h1><i class="glyphicon glyphicon-list"></i> Agregar Lista</h1>
+			                </div>
+			                <div class="modal-body">
+			                
+			                <input name="lista" id="lista" type="text" maxlength="15" placeholder="lista" class="form-control"/>
+			                
+			                </div>
+			                <div class="modal-footer">
+			                	<button id="AgregarULista" type="submit" class="btn btn-primary pull-left" data-dismiss="modal">Agregar</button>
+			                	<button type="submit" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			    <!-- Modal listas -->
 				<ul id="listOfList" class="list-group"/>
         		<script id="rowTemplateLists" type="text/html">
         	    	<a href="#itemsList" class="list-group-item">{{LIST}}</a>
@@ -36,6 +77,15 @@
         		<script id="rowTemplateListsActive" type="text/html">
         	    	<a href="#itemsList" class="list-group-item active">{{LIST}}</a>
         		</script>
+        		 <!-- botones de lista -->
+        		<div class="btn-group pull-left">
+				  <button type="button" class="btn btn-default" href="#lista" data-toggle="modal"><span class="glyphicon glyphicon-plus"></span> Agregar lista</button>
+				</div>
+				<div class="btn-group pull-right">
+				  <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+				  <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
+				</div>
+				<!-- botones de lista -->  
 			  </div>
 		  	</div>
 	      </div>
@@ -45,47 +95,44 @@
 			    <h1 id="labelPanelItems" class="panel-title">Item de la lista...</h1>
 			  </div>
 			  <div class="panel-body" style="min-height:400px">
+			  	<!-- Modal items -->
+			    <div class="modal fade" id="item" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			        <div class="modal-dialog">
+			            <div class="modal-content">
+			                <div class="modal-header modal-header-primary">
+			                    <h1><i class="glyphicon glyphicon-tag"></i> Agregar Item</h1>
+			                </div>
+			                <div class="modal-body">
+			                
+			                <input name="item" id="item" type="text" maxlength="15" placeholder="item" class="form-control"/>
+			                
+			                </div>
+			                <div class="modal-footer">
+			                	<button id="AgregarItem" type="submit" class="btn btn-primary pull-left" data-dismiss="modal">Agregar</button>
+			                	<button type="submit" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			    <!-- Modal items -->
 			    <ul id="listOfItems" class="list-group"/>
         		<script id="rowTemplateItems" type="text/html">
        	    		<a href="#incItem" class="list-group-item"><span class="badge">{{VOTES}}</span>{{ITEM}}</a>
         		</script>
+        		<!-- botones de item -->
+        		<div class="btn-group pull-left">
+				  <button type="button" class="btn btn-default" href="#item" data-toggle="modal"><span class="glyphicon glyphicon-plus"></span> Agregar item</button>
+				</div>
+				<div class="btn-group pull-right">
+				  <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+				  <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
+				</div>
+				<!-- botones de item --> 
 			  </div>
 		  	</div>
 	      </div>
 		</div>
 	    <div th:substituteby="footer :: copy"></div>
-	    
-	    <!--nico: esto lo voy a poner en el archivo js apropiado pero quiero probar algo antes-->
-	    <script>
-	    	$(function userform() {
-				 $('#Content').after('Nuevo Usuario: <input name="username" id="username" type="text" maxlength="10" /><button id="AgregarUsuario">Ok</button>');
-			});
-			$(function () {
-				  $('#AgregarUsuario').on('click', function () {
-					  $('#Content').before($('#username').val() + '<br/>');
-					  var userjson = {}; //poner user posta
-					  userjson['id'] = 777;
-					  userjson['username'] = $('#username').val();
-					  userjson['lists'] = [];
-					  $.ajax({
-						    url : "/users",
-						    type: "POST",
-						    data : JSON.stringify(userjson),
-						    contentType: 'application/json',
-						    success: function(data, textStatus, jqXHR)
-						    {
-						    	alert('Usuario "' + $('#username').val() + '" creado.');
-						        //data - respuesta del server
-						    },
-						    error: function (jqXHR, textStatus, errorThrown)
-						    {
-						    	alert('Error. cuando se solucione el problema de los POST esto va a andar');
-						    }
-						});
-				  });
-			});
-		</script>
-		<!--nico: esto lo voy a poner en el archivo js apropiado pero quiero probar algo antes-->
 	</body>
 	<script src="/resources/js/jquery-2.1.0.min.js"></script>
 	<script src="/resources/js/application.js"></script>
