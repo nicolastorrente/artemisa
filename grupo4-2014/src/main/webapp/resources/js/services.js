@@ -3,7 +3,7 @@ function loadFriends(loadUserLists) {
 	    type: "GET",
 		url: "/users",
 		success: function(ajaxresult){
-			$("#listUsers").empty();
+			$("#listUsers, #myLists").empty();
 			var row = null;
 			for(var k in ajaxresult) {
 				app.model.users[ajaxresult[k].username] = ajaxresult[k];
@@ -17,8 +17,7 @@ function loadFriends(loadUserLists) {
 					$("#listUsers").append(row);
 				}
 			}
-			$('#listUsers a').click(loadLists);
-			$('#myLists a').click(loadLists);
+			$('#listUsers a, #myLists a').click(loadLists);
 			if(loadUserLists){
 				loadListsFrom('Yo', true);
 			}
@@ -44,7 +43,7 @@ function loadListsFrom(userName, loadItemsList){
 	}
 	$.ajax({
 		type: "GET",
-		url: "/user/" + user.id + "/lists/",
+		url: "/users/" + user.id + "/lists/",
 		success: function(ajaxresult){
 			var listName = '';
 			var row = null;
@@ -82,7 +81,7 @@ function loadItemsFrom(listName){
 	var list = app.model.userSelected.lists[listName];
 	$.ajax({
 		type: "GET",
-		url: "/user/" + app.model.userSelected.id + "/lists/" + list.id + "/items",
+		url: "/users/" + app.model.userSelected.id + "/lists/" + list.id + "/items",
 		success: function(ajaxresult){
 			$("#listOfItems").empty();
 			for(var k in ajaxresult) {
