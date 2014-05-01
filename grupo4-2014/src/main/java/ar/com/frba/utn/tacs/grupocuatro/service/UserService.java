@@ -1,8 +1,13 @@
 package ar.com.frba.utn.tacs.grupocuatro.service;
 
 import java.util.List;
+
 import org.springframework.stereotype.Service;
+
 import ar.com.frba.utn.tacs.grupocuatro.domain.User_G4;
+import ar.com.frba.utn.tacs.grupocuatro.exceptions.ObjectNotFoundException;
+import ar.com.frba.utn.tacs.grupocuatro.exceptions.UserAlreadyExistsException;
+import ar.com.frba.utn.tacs.grupocuatro.exceptions.UserCreationException;
 
 @Service
 public interface UserService {
@@ -10,12 +15,13 @@ public interface UserService {
 	/**
 	 * CREATE
 	 * 
-	 * Recibe un usuario y retorna un boolean con el resultado.
+	 * Recibe un usuario, le asigna un id y lo persiste.
 	 * 
 	 * @param user: Datos de usuario.
-	 * @return TRUE o FALSE dependiendo del resultado de la operacion.
+	 * @throws UserCreationException: si no tiene un username válido
+	 * @throws UserAlreadyExistsException: si ya existe un usuario con ese username
 	 */
-	public boolean create(User_G4 user);
+	public void create(User_G4 user);
 
 	/**
 	 * GET BY ID
@@ -23,7 +29,7 @@ public interface UserService {
 	 * Recibe un ID y retorna un usuario.
 	 * 
 	 * @param id: ID de usuario.
-	 * @return Datos de usuario.
+	 * @return User_G4.
 	 */
 	public User_G4 getById(Long id);
 
@@ -37,27 +43,13 @@ public interface UserService {
 	public List<User_G4> getAll();
 
 	/**
-	 * UPDATE 
-	 * 
-	 * Recibe un ID de un usuario y sus nuevos datos, y los actualiza en
-	 * la lista de usuarios.
-	 * 
-	 * @param id
-	 *            : ID de usuario.
-	 * @param user
-	 *            : Datos de usuario.
-	 * @return TRUE o FALSE dependiendo del resultado de la operacion.
-	 */
-	public boolean update(long id, User_G4 user);
-
-	/**
 	 * DELETE
 	 * 
 	 * Elimina un usuario por ID
 	 * 
 	 * @param id: ID de usuario.
-	 * @return TRUE o FALSE dependiendo del resultado de la operacion.
+	 * @throws ObjectNotFoundException si no encuentra el usuario con el id enviado.
 	 */
-	public boolean delete(long id);
+	public void delete(long id);
 
 }

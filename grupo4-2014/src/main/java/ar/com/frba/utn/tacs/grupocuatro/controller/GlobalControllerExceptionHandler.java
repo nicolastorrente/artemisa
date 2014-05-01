@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
-import ar.com.frba.utn.tacs.grupocuatro.exceptions.BussinessException;
+import ar.com.frba.utn.tacs.grupocuatro.exceptions.BusinessException;
 
 @ControllerAdvice
 public class GlobalControllerExceptionHandler {
 	
 	// Total control - setup a model and return the view name
-		@ExceptionHandler(BussinessException.class)
+		@ExceptionHandler(BusinessException.class)
 		public ModelAndView handleError(HttpServletRequest req, Exception exception)
 				throws Exception {
 

@@ -6,32 +6,47 @@ import ar.com.frba.utn.tacs.grupocuatro.domain.List_G4;
 
 @Service
 public interface ListService {
-	public List_G4 getById(Long id);
-
-	public List<List_G4> getAll();
 
 	/**
-	 * Crea una lista
 	 * 
-	 * @param list la lista a crear
-	 * @return si creó la lista.
+	 * @param id_user del usuario
+	 * @param list a crear
+	 * @return List_G4
+	 * @throws ObjectNotFoundException si no se encuentra el usuario
 	 */
-	public boolean create(List_G4 list);
+	public List_G4 create(Long id_user, List_G4 list);
+	
+	/**
+	 * 
+	 * @param id_user
+	 * @param id_list
+	 * @return List_G4
+	 * throws ObjectNotFoundException si no existe el usuario o la lista buscada
+	 */
+	public List_G4 getListByUserId(Long id_user, Long id_list);
 
 	/**
-	 * Actualiza una lista
 	 * 
-	 * @param id de la lista
-	 * @param list nuevos atributos de la lista
-	 * @return verdadero si actualizo la lista.
+	 * @param id_user
+	 * @return List<List_G4>
+	 * throws ObjectNotFoundException si no existe el usuario
 	 */
-	public boolean update(long id, List_G4 list);
+	public List<List_G4> getListsFromUser(Long id_user);
 
 	/**
-	 * Borra una lista
 	 * 
-	 * @param id de la lista a borrar
-	 * @return verdadero si borró la lista.
+	 * @param id_user
+	 * @param id
+	 * @throws ObjectNotFoundException si no se encuentra el usuario o la lista enviados por parámetro
 	 */
-	public boolean delete(long id);
+	public void delete(Long id_user, Long id);
+	
+	/**
+	 * 
+	 * @param userLists
+	 * @param id
+	 * @throws ObjectNotFoundException si no se encuentra el usuario o la lista enviados por parámetro
+	 */
+	public List_G4 getListById(List<List_G4> lists, final Long id);
+
 }

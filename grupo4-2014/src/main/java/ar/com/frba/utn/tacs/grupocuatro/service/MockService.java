@@ -9,7 +9,7 @@ import ar.com.frba.utn.tacs.grupocuatro.domain.User_G4;
 
 @Service
 public class MockService {
-
+	
 	public List_G4 createMockList(String id){
 		return this.createMockList(id, "jack", 3);
 	}
@@ -58,24 +58,23 @@ public class MockService {
 		return list;
 	}
 
-	public User_G4 createMockUser(String id) {
+	public User_G4 createMockUser(Long id) {
 		return this.createMockUser(id, "Angus");
 	}
 	
-	private User_G4 createMockUser(String id, String name) {
-		User_G4 user = new User_G4("");
-		user.setId(Long.parseLong(id));
-		user.setUsername(name);
+	public User_G4 createMockUser(Long id, String name) {
+		User_G4 user = new User_G4(name);
+		user.setId(id);
 		user.setLists(this.createMockListOfList());
 		return user;
 	}
 
 	public List<User_G4> createMockListOfUsers() {
 		List<User_G4> list = new ArrayList<User_G4>();
-		list.add(this.createMockUser("12341", "Moe"));
-		list.add(this.createMockUser("12342", "Larry"));
-		list.add(this.createMockUser("12343", "Shemp"));
-		list.add(this.createMockUser("12344", "Curly"));
+		list.add(this.createMockUser(12341l, "Moe"));
+		list.add(this.createMockUser(12342l, "Larry"));
+		list.add(this.createMockUser(12343l, "Shemp"));
+		list.add(this.createMockUser(12344l, "Curly"));
 		return list;
 	}
 }
