@@ -87,3 +87,28 @@ function loadItemsFrom(listName){
 		}
 	});
 }
+
+$(function agregarUsuario() {
+	  $('#AgregarUsuario').on('click', function () {
+		  $('#Content').before($('#username').val() + '<br/>');
+		  var userjson = {}; //poner user posta
+		  userjson['id'] = 777;
+		  userjson['username'] = $('#username').val();
+		  userjson['lists'] = [];
+		  $.ajax({
+			    url : "/users",
+			    type: "POST",
+			    data : JSON.stringify(userjson),
+			    contentType: 'application/json',
+			    success: function(data, textStatus, jqXHR)
+			    {
+			    	alert('Usuario "' + $('#username').val() + '" creado.');
+			        //data - respuesta del server
+			    },
+			    error: function (jqXHR, textStatus, errorThrown)
+			    {
+			    	alert('Error. cuando se solucione el problema de los POST esto va a andar');
+			    }
+			});
+	  });
+});
