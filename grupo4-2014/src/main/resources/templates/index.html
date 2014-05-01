@@ -1,23 +1,33 @@
 <!DOCTYPE html>
 <html>
 	<head th:substituteby="header :: copy">
-	<style type='text/css'>
-	</style>
+		<style type='text/css'>
+		</style>
 	</head>
 	<body onload="loadFriends(true);return false;userform();">
 		<div id='content' class='row'>
 	      <div class='col-md-3'>
+			<div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h1 class="panel-title">Yo</h1>
+			  </div>
+			  <div class="panel-body" style="min-height:70px">
+			  	<ul id="myLists" class="list-group">
+			  		<!-- Mis Listas -->
+			  	</ul>
+			  </div>	 
+			</div>     
 	        <div class="panel panel-default">
 			  <div class="panel-heading">
-			    <h1 class="panel-title">Usuarios</h1>
+			    <h1 class="panel-title">Amigos</h1>
 			  </div>
-			  <div class="panel-body" style="min-height:400px">
+			  <div class="panel-body" style="min-height:330px;">
 			  	<ul id="listUsers" class="list-group"/>
         		<script id="rowTemplateUsers" type="text/html">
-        	    	<a href="#userLists" class="list-group-item">{{USER}}</a>
+        	    	<a href="#userLists" class="list-group-item" id="{{USER_ID}}">{{USER}}</a>
         		</script>
         		<script id="rowTemplateUsersActive" type="text/html">
-        	    	<a href="#userLists" class="list-group-item active">{{USER}}</a>
+        	    	<a href="#userLists" class="list-group-item active" id="{{USER_ID}}">{{USER}}</a>
         		</script>
         		<div id="Content"></div>
         		<!-- Modal usuario -->

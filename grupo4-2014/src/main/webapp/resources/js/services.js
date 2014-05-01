@@ -8,13 +8,17 @@ function loadFriends(loadUserLists) {
 			for(var k in ajaxresult) {
 				app.model.users[ajaxresult[k].username] = ajaxresult[k];
 				if(loadUserLists && 'Yo' == ajaxresult[k].username){
-					row = $("#rowTemplateUsersActive").html().replace("{{USER}}", ajaxresult[k].username);
+					row = $("#rowTemplateUsersActive").html().replace("{{USER}}", "Mis Listas");
+					row = row.replace("{{USER_ID}}", "Yo");
+					$("#myLists").append(row);
 				}else{
 					row = $("#rowTemplateUsers").html().replace("{{USER}}", ajaxresult[k].username);
+					row = row.replace("{{USER_ID}}", ajaxresult[k].username);
+					$("#listUsers").append(row);
 				}
-				$("#listUsers").append(row);
 			}
 			$('#listUsers a').click(loadLists);
+			$('#myLists a').click(loadLists);
 			if(loadUserLists){
 				loadListsFrom('Yo', true);
 			}
@@ -23,8 +27,9 @@ function loadFriends(loadUserLists) {
 }
 
 function loadLists() {
-	var userName = $(this).text();
+	var userName = $(this).attr('id');
 	$("#listUsers a").removeClass('active');
+	$("#myLists a").removeClass('active');
 	$(this).addClass('active');
 	loadListsFrom(userName, false);
 }
