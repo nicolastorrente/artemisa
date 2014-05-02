@@ -51,9 +51,9 @@ function loadListsFrom(userName, loadItemsList){
 			for(var k in ajaxresult) {
 				if(loadItemsList && listName == ''){
 					listName = ajaxresult[k].name;
-					row = $("#rowTemplateListsActive").html().replace("{{LIST}}", ajaxresult[k].name);
+					row = $("#rowTemplateListsActive").html().replace("{{LIST}}", ajaxresult[k].name).replace("{{ID_LIST}}", ajaxresult[k].id);
 				}else{
-					row = $("#rowTemplateLists").html().replace("{{LIST}}", ajaxresult[k].name);
+					row = $("#rowTemplateLists").html().replace("{{LIST}}", ajaxresult[k].name).replace("{{ID_LIST}}", ajaxresult[k].id);
 				}
 				user.lists[ajaxresult[k].name] = ajaxresult[k]; 
 				$("#listOfList").append(row);
@@ -144,11 +144,11 @@ $(function EliminarLista() {
 	  $('#eliminar_Lista').on('click', function (e) {
 		  e.preventDefault();
 		  $.ajax({ 
-			    url : "/users/" + app.model.userSelected.id + "/lists/" + 12341, // 12341 lista harcodeada 
+			    url : "/users/" + app.model.userSelected.id + "/lists/" + app.model.selectedList, // 12341 lista harcodeada 
 			    type: "DELETE",
 			    success: function(data, textStatus, jqXHR)
 			    {
-			    	alert('Eliminada lista "' + 'harcodeada' + '" al usuario ' + app.model.userSelected.id);
+			    	alert('Eliminada lista "' + app.model.selectedList + '" al usuario ' + app.model.userSelected.id);
 			    	loadFriends(app.model.userSelected.id);
 			    },
 			    error: function (jqXHR, textStatus, errorThrown)
@@ -158,3 +158,7 @@ $(function EliminarLista() {
 			});
 	  });
 });
+
+function SelecLista(id) {
+	app.model.selectedList = id;
+}
