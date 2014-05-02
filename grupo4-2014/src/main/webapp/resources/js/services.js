@@ -94,7 +94,6 @@ function loadItemsFrom(listName){
 
 $(function agregarUsuario() {
 	  $('#AgregarUsuario').on('click', function () {
-		  $('#Content').before($('#username').val() + '<br/>');
 		  var userjson = {}; //poner user posta
 		  userjson['id'] = 777;
 		  userjson['username'] = $('#username').val();
@@ -107,11 +106,35 @@ $(function agregarUsuario() {
 			    success: function(data, textStatus, jqXHR)
 			    {
 			    	alert('Usuario "' + $('#username').val() + '" creado.');
-			        //data - respuesta del server
+			    	loadFriends(true);
 			    },
 			    error: function (jqXHR, textStatus, errorThrown)
 			    {
-			    	alert('Error. cuando se solucione el problema de los POST esto va a andar');
+			    	alert('Error al agregar usuario.');
+			    }
+			});
+	  });
+});
+
+$(function agregarLista() {
+	  $('#AgregarLista').on('click', function () {
+		  var userjson = {}; //poner user posta
+		  userjson['id'] = 777;
+		  userjson['name'] = $('#lista_nombre').val();
+		  userjson['items'] = [];
+		  $.ajax({
+			    url : "/users/" + app.model.userSelected.id + "/lists",
+			    type: "POST",
+			    data : JSON.stringify(userjson),
+			    contentType: 'application/json',
+			    success: function(data, textStatus, jqXHR)
+			    {
+			    	alert('Agregada lista "' + $('#lista_nombre').val() + '" al usuario ' + app.model.userSelected.id);
+			    	loadFriends(app.model.userSelected.id);
+			    },
+			    error: function (jqXHR, textStatus, errorThrown)
+			    {
+			    	alert('Error al agregar lista.');
 			    }
 			});
 	  });
