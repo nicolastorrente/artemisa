@@ -3,64 +3,68 @@ function loadFriends(loadUserLists) {
 	    type: "GET",
 		url: "/users",
 		success: function(ajaxresult){
-			$("#listUsers, #myLists").empty();
+			$("#listUsers").empty();
+			if(loadUserLists){
+				$("#myLists").empty();
+			}
 			var row = null;
 			for(var k in ajaxresult) {
-				app.model.users[ajaxresult[k].username] = ajaxresult[k];
+				app.model.users[ajaxresult[k].id] = ajaxresult[k];
 				if(loadUserLists && 'Yo' == ajaxresult[k].username){
 					row = $("#rowTemplateUsersActive").html().replace("{{USER}}", "Mis Listas");
-					row = row.replace("{{USER_ID}}", "Yo");
+					row = row.replace("{{USER_ID}}", ajaxresult[k].id);
 					$("#myLists").append(row);
+					app.model.myId = ajaxresult[k].id;
 				}else{
 					row = $("#rowTemplateUsers").html().replace("{{USER}}", ajaxresult[k].username);
-					row = row.replace("{{USER_ID}}", ajaxresult[k].username);
+					row = row.replace("{{USER_ID}}", ajaxresult[k].id);
 					$("#listUsers").append(row);
 				}
 			}
 			$('#listUsers a, #myLists a').click(loadLists);
 			if(loadUserLists){
-				loadListsFrom('Yo', true);
+				loadListsFrom(app.model.myId, true);
 			}
 		}
 	});
 }
 
 function loadLists() {
-	var userName = $(this).attr('id');
-	$("#listUsers a").removeClass('active');
-	$("#myLists a").removeClass('active');
-	$(this).addClass('active');
-	loadListsFrom(userName, false);
-}
+	  var userId = $(this).attr('id');
+	  $("#listUsers a").removeClass('active');
+	  $("#myLists a").removeClass('active');
+	  $(this).addClass('active');
+	  loadListsFrom(userId, false);
+};
 
-function loadListsFrom(userName, loadItemsList){
-	app.model.userSelected = app.model.users[userName];
-	var user = app.model.users[userName];
-	if(userName == "Yo"){
+function loadListsFrom(userId, loadItemsList){
+	app.model.userSelected = app.model.users[userId];
+	var user = app.model.userSelected;
+	if(app.model.myId == userId){
 		$("#labelPanelLists").text("Mis listas");
 	}else{
-		$("#labelPanelLists").text("Listas de " + userName);
+		$("#labelPanelLists").text("Listas de " + user.username);
 	}
 	$.ajax({
 		type: "GET",
 		url: "/users/" + user.id + "/lists/",
 		success: function(ajaxresult){
-			var listName = '';
+			var listId = '';
 			var row = null;
 			$("#listOfList").empty();
 			for(var k in ajaxresult) {
-				if(loadItemsList && listName == ''){
-					listName = ajaxresult[k].name;
+				if(loadItemsList && listId == ''){
+					listId = ajaxresult[k].id;
 					row = $("#rowTemplateListsActive").html().replace("{{LIST}}", ajaxresult[k].name).replace("{{ID_LIST}}", ajaxresult[k].id);
 				}else{
 					row = $("#rowTemplateLists").html().replace("{{LIST}}", ajaxresult[k].name).replace("{{ID_LIST}}", ajaxresult[k].id);
 				}
-				user.lists[ajaxresult[k].name] = ajaxresult[k]; 
+				user.lists[ajaxresult[k].id] = ajaxresult[k]; 
 				$("#listOfList").append(row);
 			}
 			$('#listOfList a').click(loadItems);
 			if(loadItemsList){
-				loadItemsFrom(listName);
+				loadItemsFrom(listId);
 			}else{
 				$("#listOfItems").empty();
 				$('#labelPanelItems').text("Items de la lista...");
@@ -70,32 +74,26 @@ function loadListsFrom(userName, loadItemsList){
 }
 
 function loadItems() {
-	var listName = $(this).text();
 	$("#listOfList a").removeClass('active');
 	$(this).addClass('active');
-	loadItemsFrom(listName);
+	var userId = $(this).attr('id');
+	loadItemsFrom(userId);
 }
 
-function loadItemsFrom(listName){
-	$('#labelPanelItems').text("Items de la lista " + listName);
-	var list = app.model.userSelected.lists[listName];
-	$.ajax({
-		type: "GET",
-		url: "/users/" + app.model.userSelected.id + "/lists/" + list.id + "/items",
-		success: function(ajaxresult){
-			$("#listOfItems").empty();
-			for(var k in ajaxresult) {
-				row = $("#rowTemplateItems").html().replace("{{VOTES}}", ajaxresult[k].votes).replace("{{ITEM}}", ajaxresult[k].label);
-				$("#listOfItems").append(row);
-			}
-		}
-	});
+function loadItemsFrom(listId){
+	app.model.selectedList = app.model.userSelected.lists[listId];
+	var list = app.model.userSelected.lists[listId];
+	$('#labelPanelItems').text("Items de la lista " + list.name);
+	$("#listOfItems").empty();
+	for(var k in list.items) {
+		row = $("#rowTemplateItems").html().replace("{{VOTES}}", list.items[k].votes).replace("{{ITEM}}", list.items[k].label);
+		$("#listOfItems").append(row);
+	}
 }
 
-$(function agregarUsuario() {
+$(function addUser() {
 	  $('#AgregarUsuario').on('click', function () {
-		  var userjson = {}; //poner user posta
-		  userjson['id'] = 777;
+		  var userjson = {};
 		  userjson['username'] = $('#username').val();
 		  userjson['lists'] = [];
 		  $.ajax({
@@ -105,8 +103,7 @@ $(function agregarUsuario() {
 			    contentType: 'application/json',
 			    success: function(data, textStatus, jqXHR)
 			    {
-			    	alert('Usuario "' + $('#username').val() + '" creado.');
-			    	loadFriends(true);
+			    	loadFriends(false);
 			    },
 			    error: function (jqXHR, textStatus, errorThrown)
 			    {
@@ -116,10 +113,9 @@ $(function agregarUsuario() {
 	  });
 });
 
-$(function agregarLista() {
+$(function addList() {
 	  $('#AgregarLista').on('click', function () {
-		  var userjson = {}; //poner user posta
-		  userjson['id'] = 777;
+		  var userjson = {};
 		  userjson['name'] = $('#lista_nombre').val();
 		  userjson['items'] = [];
 		  $.ajax({
@@ -129,8 +125,7 @@ $(function agregarLista() {
 			    contentType: 'application/json',
 			    success: function(data, textStatus, jqXHR)
 			    {
-			    	alert('Agregada lista "' + $('#lista_nombre').val() + '" al usuario ' + app.model.userSelected.id);
-			    	loadFriends(app.model.userSelected.id);
+			    	loadListsFrom(app.model.userSelected.id,false);
 			    },
 			    error: function (jqXHR, textStatus, errorThrown)
 			    {
@@ -144,11 +139,10 @@ $(function EliminarLista() {
 	  $('#eliminar_Lista').on('click', function (e) {
 		  e.preventDefault();
 		  $.ajax({ 
-			    url : "/users/" + app.model.userSelected.id + "/lists/" + app.model.selectedList, // 12341 lista harcodeada 
+			    url : "/users/" + app.model.userSelected.id + "/lists/" + app.model.selectedList.id, // 12341 lista harcodeada 
 			    type: "DELETE",
 			    success: function(data, textStatus, jqXHR)
 			    {
-			    	alert('Eliminada lista "' + app.model.selectedList + '" al usuario ' + app.model.userSelected.id);
 			    	loadFriends(app.model.userSelected.id);
 			    },
 			    error: function (jqXHR, textStatus, errorThrown)
@@ -158,7 +152,3 @@ $(function EliminarLista() {
 			});
 	  });
 });
-
-function SelecLista(id) {
-	app.model.selectedList = id;
-}

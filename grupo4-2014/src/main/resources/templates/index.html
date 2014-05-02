@@ -11,7 +11,7 @@
 			  <div class="panel-heading">
 			    <h1 class="panel-title">Yo</h1>
 			  </div>
-			  <div class="panel-body" style="min-height:70px">
+			  <div class="panel-body" style="height:72px">
 			  	<ul id="myLists" class="list-group">
 			  		<!-- Mis Listas -->
 			  	</ul>
@@ -59,7 +59,7 @@
 			  <div class="panel-heading">
 			    <h1 id="labelPanelLists" class="panel-title">Listas del usuario...</h1>
 			  </div>
-			  <div class="panel-body" style="min-height:400px">
+			  <div class="panel-body" style="min-height:462px">
 			  	<!-- Modal listas -->
 			    <div class="modal fade" id="lista" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			        <div class="modal-dialog">
@@ -82,10 +82,10 @@
 			    <!-- Modal listas -->
 				<ul id="listOfList" class="list-group"/>
         		<script id="rowTemplateLists" type="text/html">
-        	    	<a href="#itemsList" class="list-group-item" onclick="SelecLista({{ID_LIST}})">{{LIST}}</a>
+        	    	<a href="#itemsList" class="list-group-item" id="{{ID_LIST}}">{{LIST}}</a>
         		</script>
         		<script id="rowTemplateListsActive" type="text/html">
-        	    	<a href="#itemsListActive" class="list-group-item active">{{LIST}}</a>
+        	    	<a href="#itemsListActive" class="list-group-item active" id="{{ID_LIST}}">{{LIST}}</a>
         		</script>
         		 <!-- botones de lista -->
         		<div class="btn-group pull-left">
@@ -103,7 +103,7 @@
 			  <div class="panel-heading">
 			    <h1 id="labelPanelItems" class="panel-title">Item de la lista...</h1>
 			  </div>
-			  <div class="panel-body" style="min-height:400px">
+			  <div class="panel-body" style="min-height:462px">
 			  	<!-- Modal items -->
 			    <div class="modal fade" id="item" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			        <div class="modal-dialog">
