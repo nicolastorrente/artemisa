@@ -139,3 +139,22 @@ $(function agregarLista() {
 			});
 	  });
 });
+
+$(function EliminarLista() {
+	  $('#eliminar_Lista').on('click', function (e) {
+		  e.preventDefault();
+		  $.ajax({ 
+			    url : "/users/" + app.model.userSelected.id + "/lists/" + 12341, // 12341 lista harcodeada 
+			    type: "DELETE",
+			    success: function(data, textStatus, jqXHR)
+			    {
+			    	alert('Eliminada lista "' + 'harcodeada' + '" al usuario ' + app.model.userSelected.id);
+			    	loadFriends(app.model.userSelected.id);
+			    },
+			    error: function (jqXHR, textStatus, errorThrown)
+			    {
+			    	alert('Error al agregar lista.');
+			    }
+			});
+	  });
+});
