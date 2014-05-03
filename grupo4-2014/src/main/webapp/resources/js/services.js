@@ -39,6 +39,7 @@ function loadLists() {
 
 function loadListsFrom(userId, loadItemsList){
 	app.model.userSelected = app.model.users[userId];
+	app.model.selectedList = null;
 	var user = app.model.userSelected;
 	if(app.model.myId == userId){
 		$("#labelPanelLists").text("Mis listas");
@@ -49,67 +50,78 @@ function loadListsFrom(userId, loadItemsList){
 		type: "GET",
 		url: "/users/" + user.id + "/lists/",
 		success: function(ajaxresult){
-			var listId = 0;
-			var row = null;
-			app.model.userLists = [];
-			$("#listOfList").empty();
-			for(var k in ajaxresult) {
-				if(loadItemsList && listId == 0){
-					app.model.selectedList = ajaxresult[k];
-					listId = ajaxresult[k].id;
-					row = $("#rowTemplateListsActive").html().replace("{{LIST}}", ajaxresult[k].name).replace("{{LIST_ID}}", ajaxresult[k].id);
-				}else{
-					row = $("#rowTemplateLists").html().replace("{{LIST}}", ajaxresult[k].name).replace("{{LIST_ID}}", ajaxresult[k].id);
-				}
-				app.model.userLists[ajaxresult[k].id] = ajaxresult[k]; 
-				$("#listOfList").append(row);
-			}
-			$('#listOfList a').click(loadItems);
-			if(loadItemsList){
-				loadItemsFrom(listId, true);
-			}else{
-				$("#listOfItems").empty();
-				$('#labelPanelItems').text("Items de la lista...");
-			}
+			showLists(user, ajaxresult, loadItemsList);
 		}
 	});
+}
+
+function showLists(user, ajaxresult, loadItemsList){
+	var listId = 0;
+	var row = null;
+	$("#listOfList").empty();
+	user.lists = {};
+	for(var k in ajaxresult) {
+		if(loadItemsList && listId == 0){
+			listId = ajaxresult[k].id;
+			row = $("#rowTemplateListsActive").html().replace("{{LIST}}", ajaxresult[k].name).replace("{{ID_LIST}}", ajaxresult[k].id);
+		}else{
+			row = $("#rowTemplateLists").html().replace("{{LIST}}", ajaxresult[k].name).replace("{{ID_LIST}}", ajaxresult[k].id);
+		}
+		user.lists[ajaxresult[k].id] = ajaxresult[k];
+		$("#listOfList").append(row);
+	}
+	$('#listOfList a').click(loadItems);
+	if(loadItemsList){
+		showItemsFrom(listId);
+	}else{
+		$("#listOfItems").empty();
+		$('#labelPanelItems').text("Items de la lista...");
+	}
 }
 
 function loadItems() {
 	$("#listOfList a").removeClass('active');
 	$(this).addClass('active');
-	loadItemsFrom(app.model.selectedList.id, true);
+	var userId = $(this).attr('id');
+	showItemsFrom(userId);
 }
 
-function refreshItems() {
-	$("#listOfItems a").removeClass('active');
-	$(this).addClass('active');
+function showItemsFrom(listId){
+	 app.model.selectedList = app.model.userSelected.lists[listId];
+	 app.model.selectedItem = null;
+	 var list = app.model.userSelected.lists[listId];
+	 $('#labelPanelItems').text("Items de la lista " + list.name);
+	 $("#listOfItems").empty();
+	 var items = list.items;
+	 list.items = {}; // para usar como mapa por id en lugar de lista
+	 for(var k in items) {
+	 	row = $("#rowTemplateItems").html().replace("{{VOTES}}", items[k].votes).replace("{{ITEM}}", items[k].label).replace("{{ID_ITEM}}", items[k].id);
+	 	$("#listOfItems").append(row);
+	 	list.items[items[k].id] = items[k]; 
+	 }
+	 $('#listOfItems a').click(selectItem);
 }
 
-function loadItemsFrom(listId, loadItemsList){
-	$('#labelPanelItems').text("Items de la lista " + app.model.selectedList.name);
+function loadlist(listId){
 	$.ajax({
 		type: "GET",
-		url: "/users/" + app.model.userSelected.id + "/lists/" + listId,
+		url: "/users/" + app.model.userSelected.id + "/lists/" + app.model.selectedList.id,
 		success: function(ajaxresult){
-			$("#listOfItems").empty();
-			var itemId = 0;
-			var row = null;
-			app.model.selectedList.items = [];
-			for(var k in ajaxresult.items) {
-				if(loadItemsList && itemId == 0){
-					itemId = ajaxresult.items[k].id;
-					row = $("#rowTemplateItemsActive").html().replace("{{VOTES}}", ajaxresult.items[k].votes).replace("{{ITEM_ID}}", ajaxresult.items[k].id).replace("{{ITEM}}", ajaxresult.items[k].label);
-					app.model.selectedItem = ajaxresult.items[k];
-				} else {
-					row = $("#rowTemplateItems").html().replace("{{VOTES}}", ajaxresult.items[k].votes).replace("{{ITEM_ID}}", ajaxresult.items[k].id).replace("{{ITEM}}", ajaxresult.items[k].label);
-				}
-				app.model.selectedList.items[ajaxresult.items[k].id] = ajaxresult.items[k]; 
-				$("#listOfItems").append(row);
-				$('#listOfItems a').click(refreshItems);
-			}
-		}
+			app.model.userSelected.lists[listId] = ajaxresult;
+			showItemsFrom(listId);
+		},
+		error: function (jqXHR, textStatus, errorThrown)
+	    {
+			alert('Error al cargar la lista.');
+	    }
 	});
+}
+
+function selectItem() {
+	 $("#listOfItems a").removeClass('active');
+	 $(this).addClass('active');
+	 var itemId = $(this).attr('id');
+	 app.model.selectedItem = app.model.selectedList.items[itemId];
 }
 
 $(function addUser() {
@@ -124,17 +136,19 @@ $(function addUser() {
 			    contentType: 'application/json',
 			    success: function(data, textStatus, jqXHR)
 			    {
+			    	$('#username').val("");
 			    	loadFriends(false);
 			    },
 			    error: function (jqXHR, textStatus, errorThrown)
 			    {
+			    	$('#username').val("");
 			    	alert('Error al agregar usuario.');
 			    }
 			});
 	  });
 });
 
-$(function addList() {
+$(function addListModal() {
 	  $('#AgregarLista').on('click', function () {
 		  var userjson = {};
 		  userjson['name'] = $('#lista_nombre').val();
@@ -146,21 +160,32 @@ $(function addList() {
 			    contentType: 'application/json',
 			    success: function(data, textStatus, jqXHR)
 			    {
-			    	alert('Agregada lista "' + $('#lista_nombre').val() + '" al usuario ' + app.model.userSelected.username);
-			    	loadFriends(true);
+			    	$('#lista_nombre').val("");
+			    	loadListsFrom(app.model.userSelected.id,false);
 			    },
 			    error: function (jqXHR, textStatus, errorThrown)
 			    {
+			    	$('#lista_nombre').val("");
 			    	alert('Error al agregar lista.');
 			    }
 			});
 	  });
 });
 
-$(function agregarItem() {
+$(function addItemLaunch() {
+	  $('#addItemLaunch').on('click', function () {
+		  if(app.model.selectedList){
+			  $('#item').modal({show:true});
+		  }else{
+			  $('#noListSelectedModal').modal({show:true});
+		  }
+	  });
+});
+
+$(function addItem() {
 	  $('#AgregarItem').on('click', function () {
-		  var userjson = {}; //poner user posta
-		  userjson['label'] = $('#item-label').val();;
+		  var userjson = {};
+		  userjson['label'] = $('#item-label').val();
 		  $.ajax({
 			    url : "/users/" + app.model.userSelected.id + "/lists/" + app.model.selectedList.id + "/items",
 			    type: "POST",
@@ -168,77 +193,86 @@ $(function agregarItem() {
 			    contentType: 'application/json',
 			    success: function(data, textStatus, jqXHR)
 			    {
-			    	alert('Agregado item "' + $('#item-label').val() + '" a la lista ' + app.model.selectedList.name);
 			    	$('#item-label').val("");
-			    	loadItems();
+			    	loadlist(app.model.selectedList.id);
 			    },
 			    error: function (jqXHR, textStatus, errorThrown)
 			    {
+			    	$('#item-label').val("");
 			    	alert('Error al agregar item.');
 			    }
 			});
 	  });
 });
 
-$(function EliminarLista() {
-	  $('#eliminar_Lista').on('click', function (e) {
-		  e.preventDefault();
-		  $.ajax({ 
-			    url : "/users/" + app.model.userSelected.id + "/lists/" + app.model.selectedList.id, // 12341 lista harcodeada 
-			    type: "DELETE",
-			    success: function(data, textStatus, jqXHR)
-			    {
-			    	alert('Eliminada lista "' + app.model.selectedList.name + '" al usuario ' + app.model.userSelected.username);
-			    	loadFriends(true);
-			    },
-			    error: function (jqXHR, textStatus, errorThrown)
-			    {
-			    	alert('Error al agregar lista.');
-			    }
-			});
+$(function deleteList() {
+	  $('#eliminar_Lista').on('click', function () {
+		  if(app.model.selectedList){
+			  $.ajax({ 
+				  url : "/users/" + app.model.userSelected.id + "/lists/" + app.model.selectedList.id, // 12341 lista harcodeada 
+				  type: "DELETE",
+				  success: function(data, textStatus, jqXHR)
+				  {
+					  delete app.model.userSelected.lists[app.model.selectedList.id];
+					  app.model.selectedList = null;
+					  showLists(app.model.userSelected, app.model.userSelected.lists, false);
+				  },
+				  error: function (jqXHR, textStatus, errorThrown)
+				  {
+					  alert('Error al agregar lista.');
+				  }
+			  });
+		  }else{
+			  $('#noListSelectedModal').modal({show:true});
+		  }
 	  });
 });
 
-$(function EliminarItem() {
-	  $('#eliminar_Item').on('click', function (e) {
-		  e.preventDefault();
-		  $.ajax({ 
-			    url : "/users/" + app.model.userSelected.id + "/lists/" + app.model.selectedList.id + "/items/" + app.model.selectedItem.id, 
-			    type: "DELETE",
-			    success: function(data, textStatus, jqXHR)
-			    {
-			    	alert('Eliminado item "' + app.model.selectedItem.label + '" a la lista ' + app.model.selectedList.name);
-			    	loadItems();
-			    },
-			    error: function (jqXHR, textStatus, errorThrown)
-			    {
-			    	alert('Error al borrar item.');
-			    }
-			});
+$(function deleteItem() {
+	  $('#eliminar_Item').on('click', function () {
+		  if(app.model.selectedItem){
+			  $.ajax({ 
+				  url : "/users/" + app.model.userSelected.id + "/lists/" + app.model.selectedList.id + "/items/" + app.model.selectedItem.id, 
+				  type: "DELETE",
+				  success: function(data, textStatus, jqXHR)
+				  {
+					  delete app.model.selectedList.items[app.model.selectedItem.id];
+					  app.model.selectedItem = null;
+					  showItemsFrom(app.model.selectedList.id);
+				  },
+				  error: function (jqXHR, textStatus, errorThrown)
+				  {
+					  alert('Error al borrar item.');
+				  }
+			  });
+		  }else{
+			  $('#noItemSelectedModal').modal({show:true});
+		  }
 	  });
 });
 
-$(function VotarItem() {
+$(function voteItem() {
 	  $('#votar_Item').on('click', function (e) {
-		  e.preventDefault();
-		  $.ajax({ 
-			    url : "/users/" + app.model.userSelected.id + "/lists/" + app.model.selectedList.id + "/items/" + app.model.selectedItem.id + "/vote", 
-			    type: "PUT",
-			    success: function(data, textStatus, jqXHR)
-			    {
-			    	loadItems();
-			    },
-			    error: function (jqXHR, textStatus, errorThrown)
-			    {
-			    	alert('Error al votar item.');
-			    }
-			});
+		  if(app.model.selectedItem){
+			  $.ajax({ 
+				  url : "/users/" + app.model.userSelected.id + "/lists/" + app.model.selectedList.id + "/items/" + app.model.selectedItem.id + "/vote", 
+				  type: "PUT",
+				  success: function(data, textStatus, jqXHR)
+				  {
+					  app.model.selectedItem.votes++;
+					  showItemsFrom(app.model.selectedList.id);
+				  },
+				  error: function (jqXHR, textStatus, errorThrown)
+				  {
+					  alert('Error al votar item.');
+				  }
+			  });
+		  }else{
+			  $('#noItemSelectedModal').modal({show:true});
+		  }
 	  });
 });
 
-function SelecLista(listId) {
-	app.model.selectedList = app.model.userLists[listId];
-}
-function SelecItem(itemId) {
-	app.model.selectedItem = app.model.selectedList.items[itemId]
-}
+$(".modal").on('shown.bs.modal', function() {
+    $(this).find("[autofocus]:first").focus();
+});
