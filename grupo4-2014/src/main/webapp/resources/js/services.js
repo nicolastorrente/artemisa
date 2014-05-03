@@ -49,22 +49,24 @@ function loadListsFrom(userId, loadItemsList){
 		type: "GET",
 		url: "/users/" + user.id + "/lists/",
 		success: function(ajaxresult){
-			var listId = '';
+			var listId = 0;
 			var row = null;
+			app.model.userLists = [];
 			$("#listOfList").empty();
 			for(var k in ajaxresult) {
-				if(loadItemsList && listId == ''){
+				if(loadItemsList && listId == 0){
+					app.model.selectedList = ajaxresult[k];
 					listId = ajaxresult[k].id;
-					row = $("#rowTemplateListsActive").html().replace("{{LIST}}", ajaxresult[k].name).replace("{{ID_LIST}}", ajaxresult[k].id);
+					row = $("#rowTemplateListsActive").html().replace("{{LIST}}", ajaxresult[k].name).replace("{{LIST_ID}}", ajaxresult[k].id);
 				}else{
-					row = $("#rowTemplateLists").html().replace("{{LIST}}", ajaxresult[k].name).replace("{{ID_LIST}}", ajaxresult[k].id);
+					row = $("#rowTemplateLists").html().replace("{{LIST}}", ajaxresult[k].name).replace("{{LIST_ID}}", ajaxresult[k].id);
 				}
-				user.lists[ajaxresult[k].id] = ajaxresult[k]; 
+				app.model.userLists[ajaxresult[k].id] = ajaxresult[k]; 
 				$("#listOfList").append(row);
 			}
 			$('#listOfList a').click(loadItems);
 			if(loadItemsList){
-				loadItemsFrom(listId);
+				loadItemsFrom(listId, true);
 			}else{
 				$("#listOfItems").empty();
 				$('#labelPanelItems').text("Items de la lista...");
@@ -76,19 +78,38 @@ function loadListsFrom(userId, loadItemsList){
 function loadItems() {
 	$("#listOfList a").removeClass('active');
 	$(this).addClass('active');
-	var userId = $(this).attr('id');
-	loadItemsFrom(userId);
+	loadItemsFrom(app.model.selectedList.id, true);
 }
 
-function loadItemsFrom(listId){
-	app.model.selectedList = app.model.userSelected.lists[listId];
-	var list = app.model.userSelected.lists[listId];
-	$('#labelPanelItems').text("Items de la lista " + list.name);
-	$("#listOfItems").empty();
-	for(var k in list.items) {
-		row = $("#rowTemplateItems").html().replace("{{VOTES}}", list.items[k].votes).replace("{{ITEM}}", list.items[k].label);
-		$("#listOfItems").append(row);
-	}
+function refreshItems() {
+	$("#listOfItems a").removeClass('active');
+	$(this).addClass('active');
+}
+
+function loadItemsFrom(listId, loadItemsList){
+	$('#labelPanelItems').text("Items de la lista " + app.model.selectedList.name);
+	$.ajax({
+		type: "GET",
+		url: "/users/" + app.model.userSelected.id + "/lists/" + listId,
+		success: function(ajaxresult){
+			$("#listOfItems").empty();
+			var itemId = 0;
+			var row = null;
+			app.model.selectedList.items = [];
+			for(var k in ajaxresult.items) {
+				if(loadItemsList && itemId == 0){
+					itemId = ajaxresult.items[k].id;
+					row = $("#rowTemplateItemsActive").html().replace("{{VOTES}}", ajaxresult.items[k].votes).replace("{{ITEM_ID}}", ajaxresult.items[k].id).replace("{{ITEM}}", ajaxresult.items[k].label);
+					app.model.selectedItem = ajaxresult.items[k];
+				} else {
+					row = $("#rowTemplateItems").html().replace("{{VOTES}}", ajaxresult.items[k].votes).replace("{{ITEM_ID}}", ajaxresult.items[k].id).replace("{{ITEM}}", ajaxresult.items[k].label);
+				}
+				app.model.selectedList.items[ajaxresult.items[k].id] = ajaxresult.items[k]; 
+				$("#listOfItems").append(row);
+				$('#listOfItems a').click(refreshItems);
+			}
+		}
+	});
 }
 
 $(function addUser() {
@@ -125,11 +146,35 @@ $(function addList() {
 			    contentType: 'application/json',
 			    success: function(data, textStatus, jqXHR)
 			    {
-			    	loadListsFrom(app.model.userSelected.id,false);
+			    	alert('Agregada lista "' + $('#lista_nombre').val() + '" al usuario ' + app.model.userSelected.username);
+			    	loadFriends(true);
 			    },
 			    error: function (jqXHR, textStatus, errorThrown)
 			    {
 			    	alert('Error al agregar lista.');
+			    }
+			});
+	  });
+});
+
+$(function agregarItem() {
+	  $('#AgregarItem').on('click', function () {
+		  var userjson = {}; //poner user posta
+		  userjson['label'] = $('#item-label').val();;
+		  $.ajax({
+			    url : "/users/" + app.model.userSelected.id + "/lists/" + app.model.selectedList.id + "/items",
+			    type: "POST",
+			    data : JSON.stringify(userjson),
+			    contentType: 'application/json',
+			    success: function(data, textStatus, jqXHR)
+			    {
+			    	alert('Agregado item "' + $('#item-label').val() + '" a la lista ' + app.model.selectedList.name);
+			    	$('#item-label').val("");
+			    	loadItems();
+			    },
+			    error: function (jqXHR, textStatus, errorThrown)
+			    {
+			    	alert('Error al agregar item.');
 			    }
 			});
 	  });
@@ -143,7 +188,8 @@ $(function EliminarLista() {
 			    type: "DELETE",
 			    success: function(data, textStatus, jqXHR)
 			    {
-			    	loadFriends(app.model.userSelected.id);
+			    	alert('Eliminada lista "' + app.model.selectedList.name + '" al usuario ' + app.model.userSelected.username);
+			    	loadFriends(true);
 			    },
 			    error: function (jqXHR, textStatus, errorThrown)
 			    {
@@ -152,3 +198,47 @@ $(function EliminarLista() {
 			});
 	  });
 });
+
+$(function EliminarItem() {
+	  $('#eliminar_Item').on('click', function (e) {
+		  e.preventDefault();
+		  $.ajax({ 
+			    url : "/users/" + app.model.userSelected.id + "/lists/" + app.model.selectedList.id + "/items/" + app.model.selectedItem.id, 
+			    type: "DELETE",
+			    success: function(data, textStatus, jqXHR)
+			    {
+			    	alert('Eliminado item "' + app.model.selectedItem.label + '" a la lista ' + app.model.selectedList.name);
+			    	loadItems();
+			    },
+			    error: function (jqXHR, textStatus, errorThrown)
+			    {
+			    	alert('Error al borrar item.');
+			    }
+			});
+	  });
+});
+
+$(function VotarItem() {
+	  $('#votar_Item').on('click', function (e) {
+		  e.preventDefault();
+		  $.ajax({ 
+			    url : "/users/" + app.model.userSelected.id + "/lists/" + app.model.selectedList.id + "/items/" + app.model.selectedItem.id + "/vote", 
+			    type: "PUT",
+			    success: function(data, textStatus, jqXHR)
+			    {
+			    	loadItems();
+			    },
+			    error: function (jqXHR, textStatus, errorThrown)
+			    {
+			    	alert('Error al votar item.');
+			    }
+			});
+	  });
+});
+
+function SelecLista(listId) {
+	app.model.selectedList = app.model.userLists[listId];
+}
+function SelecItem(itemId) {
+	app.model.selectedItem = app.model.selectedList.items[itemId]
+}
