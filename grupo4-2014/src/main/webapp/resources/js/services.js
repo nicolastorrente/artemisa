@@ -18,7 +18,9 @@ function loadFriends(loadUserLists) {
 				}else{
 					row = $("#rowTemplateUsers").html().replace("{{USER}}", ajaxresult[k].username);
 					row = row.replace("{{USER_ID}}", ajaxresult[k].id);
-					$("#listUsers").append(row);
+					if('Yo' != ajaxresult[k].username) {
+						$("#listUsers").append(row);
+					}
 				}
 			}
 			$('#listUsers a, #myLists a').click(loadLists);
