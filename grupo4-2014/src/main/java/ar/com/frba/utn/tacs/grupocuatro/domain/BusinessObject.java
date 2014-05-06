@@ -8,8 +8,6 @@ public class BusinessObject implements Serializable{
 	
 	private Long id;
 	
-	private String mockStatus;
-
 	public Long getId() {
 		return id;
 	}
@@ -17,14 +15,4 @@ public class BusinessObject implements Serializable{
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
-
-	public String getMockStatus() {
-		return mockStatus;
-	}
-
-	public void setMockStatus(String mockStatus) {
-		this.mockStatus = mockStatus;
-	}
-	
 }

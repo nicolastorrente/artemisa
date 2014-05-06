@@ -10,7 +10,12 @@ public class Item_G4 extends BusinessObject{
 	public Item_G4() {
 		super();
 	}
-	
+
+	public Item_G4(String label) {
+		super();
+		this.label = label;
+	}
+
 	public void incVotes(){
 		this.votes++;
 	}

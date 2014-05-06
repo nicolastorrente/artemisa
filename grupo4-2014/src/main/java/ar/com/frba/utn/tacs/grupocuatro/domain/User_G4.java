@@ -15,6 +15,12 @@ public class User_G4 extends BusinessObject{
 		this.lists = new ArrayList<List_G4>();
 	}
 
+	public User_G4(String username) {
+		super();
+		this.lists = new ArrayList<List_G4>();
+		this.username = username;
+	}
+
 	public String getUsername() {
 		return username;
 	}
@@ -34,6 +40,5 @@ public class User_G4 extends BusinessObject{
 	public void addList(List_G4 list){
 		this.lists.add(list);
 	}
-	
-	
+
 }
