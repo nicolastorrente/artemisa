@@ -6,6 +6,56 @@
 		</style>
 	</head>
 	<body onload="loadFriends(true);return false;">
+	<script>
+		function statusChangeCallback(response) {
+			if (response.status === 'connected') {
+				testAPI();
+			} else if (response.status === 'not_authorized') {
+				document.getElementById('status').innerHTML = 'Please log '
+						+ 'into this app.';
+			} else {
+				document.getElementById('status').innerHTML = 'Please log '
+						+ 'into Facebook.';
+			}
+		}
+		function checkLoginState() {
+			FB.getLoginStatus(function(response) {
+				statusChangeCallback(response);
+			});
+		}
+		window.fbAsyncInit = function() {
+			FB.init({
+				appId : '235401943325672',
+				cookie : true,
+				xfbml : true,
+				version : 'v2.0'
+			});
+
+			FB.getLoginStatus(function(response) {
+				statusChangeCallback(response);
+			});
+
+		};
+		(function(d, s, id) {
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id))
+				return;
+			js = d.createElement(s);
+			js.id = id;
+			js.src = "//connect.facebook.net/en_US/sdk.js";
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+		function testAPI() {
+			FB.api('/me', function(response) {
+				access_token = FB.getAuthResponse()['accessToken'];
+				user_name = response.name;
+				user_id = response.id;
+				document.getElementById('status').innerHTML = 'Gracias por loguearte, '
+						+ response.name;
+				alert(user_name + " tu token es:\n\n" + access_token + "\n\nY tu id: " + user_id);
+			});
+		}
+	</script>
 		<div id='content' class='row'>
 	      <div class='col-md-3'>
 			<div class="panel panel-default">
@@ -52,6 +102,11 @@
 			        </div>
 			    </div>
 			    <!-- Modal usuario -->
+			    <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+				</fb:login-button>
+				
+				<div id="status">
+				</div>
 			  </div>
 		  	</div>
 	      </div>
