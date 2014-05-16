@@ -14,7 +14,6 @@ public class Configuration {
 	private final String keystoreFile = "C:/keystore.jks";
 	private final String keystorePass = "grupocuatro";
 	private final String keystoreType = "pkcs12";
-//	private final String keystoreProvider = "SunJSSE";
 	private final String keystoreAlias = "tomcat";
 
 	public Configuration() {
@@ -33,7 +32,6 @@ public class Configuration {
 			        proto.setKeystoreFile(keystoreFile);
 			        proto.setKeystorePass(keystorePass);
 			        proto.setKeystoreType(keystoreType);
-//			        proto.setProperty("keystoreProvider", keystoreProvider);
 			        proto.setKeyAlias(keystoreAlias);
 			    }
 			});
