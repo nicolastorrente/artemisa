@@ -27,9 +27,6 @@ window.fbAsyncInit = function() {
 	});
 
 	FB.login(function() {
-		FB.api('/me/feed', 'post', {
-			message : 'test asdasdf'
-		});
 	}, {
 		scope : 'publish_actions'
 	});
