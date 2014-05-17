@@ -28,7 +28,7 @@ window.fbAsyncInit = function() {
 
 	FB.login(function() {
 	}, {
-		scope : 'publish_actions'
+		scope : 'user_friends,publish_actions,email,user_likes'
 	});
 
 	FB.getLoginStatus(function(response) {
