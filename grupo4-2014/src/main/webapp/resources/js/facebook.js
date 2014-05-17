@@ -6,11 +6,9 @@ function statusChangeCallback(response) {
 	if (response.status === 'connected') {
 		testAPI();
 	} else if (response.status === 'not_authorized') {
-		document.getElementById('status').innerHTML = 'Please log '
-				+ 'into this app.';
+		document.getElementById('status').innerHTML = 'Please log ' + 'into this app.';
 	} else {
-		document.getElementById('status').innerHTML = 'Please log '
-				+ 'into Facebook.';
+		document.getElementById('status').innerHTML = 'Please log ' + 'into Facebook.';
 	}
 }
 
@@ -26,6 +24,14 @@ window.fbAsyncInit = function() {
 		cookie : true,
 		xfbml : true,
 		version : 'v2.0'
+	});
+
+	FB.login(function() {
+		FB.api('/me/feed', 'post', {
+			message : 'test asdasdf'
+		});
+	}, {
+		scope : 'publish_actions'
 	});
 
 	FB.getLoginStatus(function(response) {
@@ -49,34 +55,24 @@ function testAPI() {
 		access_token = FB.getAuthResponse()['accessToken'];
 		user_name = response.name;
 		user_id = response.id;
-		document.getElementById('status').innerHTML = 'Gracias por loguearte, '
-				+ response.name;
-		alert(user_name + " tu token es:\n\n" + access_token + "\n\nY tu id: "
-				+ user_id);
+		document.getElementById('status').innerHTML = 'Gracias por loguearte, ' + response.name;
+		alert(user_name + " tu token es:\n\n" + access_token + "\n\nY tu id: " + user_id);
 	});
 }
 
-$('#publicar_Muro').on('click', function () {
-	alert("todavia no esta activado");
-   /* FB.ui(
-    	      {
-    	       method: 'feed',
-    	       name: 'The Facebook SDK for Javascript',
-    	       caption: 'Bringing Facebook to the desktop and mobile web',
-    	       description: (
-    	          'A small JavaScript library that allows you to harness ' +
-    	          'the power of Facebook, bringing the user\'s identity, ' +
-    	          'social graph and distribution power to your site.'
-    	       ),
-    	       link: 'https://developers.facebook.com/docs/reference/javascript/',
-    	       picture: 'http://www.fbrell.com/public/f8.jpg'
-    	      },
-    	      function(response) {
-    	        if (response && response.post_id) {
-    	          alert('Post was published.');
-    	        } else {
-    	          alert('Post was not published.');
-    	        }
-    	      }
-    	    );*/
+$('#publicar_Muro').on('click', function() {
+	FB.ui({
+		method : 'feed',
+		name : 'Test 1',
+		caption : 'prueba de publicar en muro',
+		description : ('gfgfgdfgasdfadf dfghfhfdgdfgdfgdfgdfgfsdfsdf.'),
+		link : 'http://www.frba.utn.edu.ar/',
+		picture : 'http://www.fbrell.com/public/f8.jpg'
+	}, function(response) {
+		if (response && response.post_id) {
+			alert('Publicado exitosamente.');
+		} else {
+			alert('No se pudo publicar :(.');
+		}
+	});
 });
