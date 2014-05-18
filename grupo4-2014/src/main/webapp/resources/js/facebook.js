@@ -60,9 +60,9 @@ function testAPI() {
 $('#publicar_Muro').on('click', function() {
 	FB.ui({
 		method : 'feed',
-		name : 'Test 1',
-		caption : 'prueba de publicar en muro',
-		description : ('gfgfgdfgasdfadf dfghfhfdgdfgdfgdfgdfgfsdfsdf.'),
+		name : 'Aplicacion grupo 4',
+		caption : 'TACS',
+		description : ('UTN - FRBA - 2014'),
 		link : 'http://www.frba.utn.edu.ar/',
 		picture : 'http://www.fbrell.com/public/f8.jpg'
 	}, function(response) {

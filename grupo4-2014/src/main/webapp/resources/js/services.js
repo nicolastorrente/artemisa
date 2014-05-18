@@ -163,6 +163,10 @@ $(function addListModal() {
 			    success: function(data, textStatus, jqXHR)
 			    {
 			    	$('#lista_nombre').val("");
+			    	$('#publicar_Muro').show("");
+			    	$('#AgregarLista').hide("");
+			    	$('#listaExito').show("");
+			    	$('#lista_nombre').hide("");
 			    	loadListsFrom(app.model.userSelected.id,false);
 			    },
 			    error: function (jqXHR, textStatus, errorThrown)
@@ -171,6 +175,15 @@ $(function addListModal() {
 			    	alert('Error al agregar lista.');
 			    }
 			});
+	  });
+});
+
+$(function refreshListModal() {
+	  $('#CerrarModalLiastas').on('click', function () {
+	    	$('#publicar_Muro').hide("");
+	    	$('#AgregarLista').show("");
+	    	$('#listaExito').hide("");
+	    	$('#lista_nombre').show("");
 	  });
 });
 
