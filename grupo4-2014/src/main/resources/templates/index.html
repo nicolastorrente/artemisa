@@ -5,7 +5,7 @@
 			
 		</style>
 	</head>
-	<body onload="loadFriends(true);return false;">
+	<body>
 		<div id='content' class='row'>
 	      <div class='col-md-3'>
 			<div class="panel panel-default">
@@ -23,41 +23,13 @@
 			    <h1 class="panel-title">Amigos</h1>
 			  </div>
 			  <div id="body-users" class="panel-body"  style="overflow-y: auto;">
-			  	<ul id="listUsers" class="list-group"/>
+			  	<ul id="listFriends" class="list-group"/>
         		<script id="rowTemplateUsers" type="text/html">
         	    	<a href="#userLists" class="list-group-item" id="{{USER_ID}}">{{USER}}</a>
         		</script>
         		<script id="rowTemplateUsersActive" type="text/html">
         	    	<a href="#userLists" class="list-group-item active" id="{{USER_ID}}">{{USER}}</a>
         		</script>
-        		<div id="Content"></div>
-        		<!-- Modal usuario -->
-        		<a class="btn btn-block btn-primary" href="#user" data-toggle="modal"><h4>Agregar usuario</h4></a>
-			    <div class="modal fade" id="user" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			        <div class="modal-dialog">
-			            <div class="modal-content">
-			                <div class="modal-header modal-header-primary">
-			                    <h1><i class="glyphicon glyphicon-user"></i> Agregar usuario</h1>
-			                </div>
-			                <div class="modal-body">
-			                
-			                <input name="username" id="username" type="text" maxlength="15" placeholder="Nombre del usuario" class="form-control" autofocus="autofocus"/>
-			                
-			                </div>
-			                <div class="modal-footer">
-			                	<button id="AgregarUsuario" type="submit" class="btn btn-primary pull-left" data-dismiss="modal">Agregar</button>
-			                	<button type="submit" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-			                </div>
-			            </div>
-			        </div>
-			    </div>
-			    <!-- Modal usuario -->
-			    <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-				</fb:login-button>
-				
-				<div id="status">
-				</div>
-				<button id="publicar_Muro" type="button" class="btn btn-default">Publicar en muro</button>
 			  </div>
 		  	</div>
 	      </div>

@@ -1,31 +1,25 @@
 function loadFriends(loadUserLists) {
 	$.ajax({
 	    type: "GET",
-		url: "/users",
+		url: "/users/" + app.model.loggedUser.id + "/friends",
 		success: function(ajaxresult){
 			$("#listUsers").empty();
 			if(loadUserLists){
 				$("#myLists").empty();
 			}
 			var row = null;
+			row = $("#rowTemplateUsersActive").html().replace("{{USER}}", "Mis Listas");
+			row = row.replace("{{USER_ID}}", app.model.loggedUser.id);
+			$("#myLists").append(row);
 			for(var k in ajaxresult) {
 				app.model.users[ajaxresult[k].id] = ajaxresult[k];
-				if(loadUserLists && 'Yo' == ajaxresult[k].username){
-					row = $("#rowTemplateUsersActive").html().replace("{{USER}}", "Mis Listas");
-					row = row.replace("{{USER_ID}}", ajaxresult[k].id);
-					$("#myLists").append(row);
-					app.model.myId = ajaxresult[k].id;
-				}else{
-					if('Yo' != ajaxresult[k].username) {
-						row = $("#rowTemplateUsers").html().replace("{{USER}}", ajaxresult[k].username);
-						row = row.replace("{{USER_ID}}", ajaxresult[k].id);
-						$("#listUsers").append(row);
-					}
-				}
+				row = $("#rowTemplateUsers").html().replace("{{USER}}", ajaxresult[k].username);
+				row = row.replace("{{USER_ID}}", ajaxresult[k].id);
+				$("#listFriends").append(row);
 			}
-			$('#listUsers a, #myLists a').click(loadLists);
+			$('#listFriends a, #myLists a').click(loadLists);
 			if(loadUserLists){
-				loadListsFrom(app.model.myId, true);
+				loadListsFrom(app.model.loggedUser.id, true);
 			}
 		}
 	});
@@ -33,7 +27,7 @@ function loadFriends(loadUserLists) {
 
 function loadLists() {
 	  var userId = $(this).attr('id');
-	  $("#listUsers a").removeClass('active');
+	  $("#listFriends a").removeClass('active');
 	  $("#myLists a").removeClass('active');
 	  $(this).addClass('active');
 	  loadListsFrom(userId, false);
@@ -42,18 +36,24 @@ function loadLists() {
 function loadListsFrom(userId, loadItemsList){
 	app.model.userSelected = app.model.users[userId];
 	app.model.selectedList = null;
-	var user = app.model.userSelected;
-	if(app.model.myId == userId){
+	$("#listOfList").empty();
+	if(app.model.loggedUser.id == userId){
 		$("#labelPanelLists").text("Mis listas");
 	}else{
-		$("#labelPanelLists").text("Listas de " + user.username);
+		$("#labelPanelLists").text("Listas de " + app.model.userSelected.username);
 	}
 	$.ajax({
 		type: "GET",
-		url: "/users/" + user.id + "/lists/",
+		url: "/users/" + app.model.userSelected.id + "/lists/",
 		success: function(ajaxresult){
-			showLists(user, ajaxresult, loadItemsList);
-		}
+			showLists(app.model.userSelected, ajaxresult, loadItemsList);
+		},
+		error: function (jqXHR, textStatus, errorThrown)
+	    {
+			if(jqXHR.status != 404){
+				alert('Error al cargar la listas.');
+			}
+	    }
 	});
 }
 
@@ -73,7 +73,7 @@ function showLists(user, ajaxresult, loadItemsList){
 		$("#listOfList").append(row);
 	}
 	$('#listOfList a').click(loadItems);
-	if(loadItemsList){
+	if(loadItemsList && ajaxresult.length > 0){
 		showItemsFrom(listId);
 	}else{
 		$("#listOfItems").empty();
@@ -126,29 +126,45 @@ function selectItem() {
 	 app.model.selectedItem = app.model.selectedList.items[itemId];
 }
 
-$(function addUser() {
-	  $('#AgregarUsuario').on('click', function () {
-		  var userjson = {};
-		  userjson['username'] = $('#username').val();
-		  userjson['lists'] = [];
-		  $.ajax({
-			    url : "/users",
-			    type: "POST",
-			    data : JSON.stringify(userjson),
-			    contentType: 'application/json',
-			    success: function(data, textStatus, jqXHR)
-			    {
-			    	$('#username').val("");
-			    	loadFriends(false);
-			    },
-			    error: function (jqXHR, textStatus, errorThrown)
-			    {
-			    	$('#username').val("");
-			    	alert('Error al agregar usuario.');
-			    }
-			});
-	  });
-});
+function login(id, name, access_token) {
+	 var userjson = {};
+	  userjson['id'] = id;
+	  userjson['username'] = name;
+	  userjson['lists'] = [];
+	  $.ajax({
+		    url : "/users",
+		    type: "POST",
+		    data : JSON.stringify(userjson),
+		    headers:{"accessToken":access_token},
+		    contentType: 'application/json',
+		    success: function(data, textStatus, jqXHR)
+		    {
+		    	app.model.loggedUser = data;
+		    	app.model.users = {};
+		    	app.model.users[data.id] = data;
+		    	loadFriends(true);
+		    },
+		    error: function (jqXHR, textStatus, errorThrown)
+		    {
+		    	alert('Error al crear el usuario.');
+		    }
+		});
+}
+
+function getUser(id, name) {
+	  $.ajax({
+		    url : "/users/" + id,
+		    type: "GET",
+		    success: function(data, textStatus, jqXHR)
+		    {
+		    	loadFriends(false);
+		    },
+		    error: function (jqXHR, textStatus, errorThrown)
+		    {
+		    	addUser(id, name);
+		    }
+		});
+};
 
 $(function addListModal() {
 	  $('#AgregarLista').on('click', function () {

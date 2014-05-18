@@ -32,7 +32,7 @@ public class ItemController {
 	 * @HTTP status: 406 Si ya existe un item con el nombre del item enviado 
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public @ResponseBody ResponseEntity<Item_G4> createItem(@PathVariable Long id_user, @PathVariable Long id_list, @RequestBody Item_G4 item){
+	public @ResponseBody ResponseEntity<Item_G4> createItem(@PathVariable String id_user, @PathVariable String id_list, @RequestBody Item_G4 item){
 		try{
 			return new ResponseEntity<Item_G4>(this.itemService.create(id_user, id_list, item),HttpStatus.OK);
 		}catch(ObjectNotFoundException e){
@@ -43,7 +43,7 @@ public class ItemController {
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "/{id}/vote")
-	public @ResponseBody ResponseEntity<Item_G4> voteItem(@PathVariable Long id_user, @PathVariable Long id_list, @PathVariable Long id){
+	public @ResponseBody ResponseEntity<Item_G4> voteItem(@PathVariable String id_user, @PathVariable String id_list, @PathVariable String id){
 		try{
 			return new ResponseEntity<Item_G4>(this.itemService.voteItem(id_user, id_list, id),HttpStatus.OK);
 		}catch(ObjectNotFoundException e){
@@ -52,7 +52,7 @@ public class ItemController {
 	}
 	
 	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
-	public @ResponseBody ResponseEntity<Item_G4> deleteList(@PathVariable Long id_user, @PathVariable Long id_list, @PathVariable Long id){
+	public @ResponseBody ResponseEntity<Item_G4> deleteList(@PathVariable String id_user, @PathVariable String id_list, @PathVariable String id){
 		try{
 			this.itemService.delete(id_user, id_list, id);
 			return new ResponseEntity<Item_G4>(HttpStatus.OK);

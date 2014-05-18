@@ -3,12 +3,20 @@ package ar.com.frba.utn.tacs.grupocuatro.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.restfb.types.User;
+
 public class User_G4 extends BusinessObject{
 	
 	private static final long serialVersionUID = -5224827520355279040L;
 
 	private String username;
 	private List<List_G4> lists;
+	
+	public User_G4(User fbUser) {
+		this();
+		this.setId(fbUser.getId());
+		this.username = fbUser.getName();
+	}
 	
 	public User_G4() {
 		super();

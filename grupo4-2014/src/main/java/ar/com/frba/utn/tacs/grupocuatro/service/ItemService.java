@@ -14,7 +14,7 @@ public interface ItemService {
 	 * @return Item_G4
 	 * throws ObjectNotFoundException si no existe el usuario o la lista enviada por parámetro
 	 */
-	public Item_G4 create(Long id_user, Long id_list, Item_G4 item);
+	public Item_G4 create(String id_user, String id_list, Item_G4 item);
 
 	/**
 	 * 
@@ -24,7 +24,7 @@ public interface ItemService {
 	 * @return Item_G4
 	 * throws ObjectNotFoundException si no existe el usuario, la lista o el item enviada por parámetro
 	 */
-	public Item_G4 voteItem(Long id_user, Long id_list, Long id);
+	public Item_G4 voteItem(String id_user, String id_list, String id);
 	
 	/**
 	 * 
@@ -33,7 +33,7 @@ public interface ItemService {
 	 * @return Item_G4
 	 * throws ObjectNotFoundException si no existe el item en la lista
 	 */
-	public Item_G4 getItemById(List<Item_G4> list, final Long id);
+	public Item_G4 getItemById(List<Item_G4> list, final String id);
 
 	/**
 	 * 
@@ -42,6 +42,6 @@ public interface ItemService {
 	 * @param id
 	 * @return
 	 */
-	public void delete(Long id_user, Long id_list, Long id);
+	public void delete(String id_user, String id_list, String id);
 
 }

@@ -15,7 +15,7 @@ import ar.com.frba.utn.tacs.grupocuatro.exceptions.ObjectNotFoundException;
 @Service
 public class ItemServiceMemory implements ItemService{
 	
-	private long lastId = 0;
+	private Long lastId = 0l;
 	@Autowired
 	private ListService listService;
 
@@ -32,18 +32,18 @@ public class ItemServiceMemory implements ItemService{
 	}
 
 	@Override
-	public Item_G4 create(Long id_user, Long id_list, Item_G4 item) {
+	public Item_G4 create(String id_user, String id_list, Item_G4 item) {
 		List_G4 list = this.listService.getListByUserId(id_user, id_list);
 		if(this.exists(list.getItems(), item)){
 			throw new ItemAlreadyExistsException("Ya existe un item con ese nombre");
 		}
-		item.setId(++this.lastId);
+		item.setId((++this.lastId).toString());
 		list.getItems().add(item);
 		return item;
 	}
 
 	@Override
-	public Item_G4 voteItem(Long id_user, Long id_list, Long id) {
+	public Item_G4 voteItem(String id_user, String id_list, String id) {
 		List_G4 list = this.listService.getListByUserId(id_user, id_list);
 		Item_G4 item = this.getItemById(list.getItems(), id);
 		item.incVotes();
@@ -51,7 +51,7 @@ public class ItemServiceMemory implements ItemService{
 	}
 	
 	@Override
-	public Item_G4 getItemById(List<Item_G4> list, final Long id) {
+	public Item_G4 getItemById(List<Item_G4> list, final String id) {
 		Item_G4 item = (Item_G4) CollectionUtils.find(list, new Predicate() {
 							@Override
 							public boolean evaluate(Object list) {
@@ -65,7 +65,7 @@ public class ItemServiceMemory implements ItemService{
 	}
 
 	@Override
-	public void delete(Long id_user, Long id_list, Long id) {
+	public void delete(String id_user, String id_list, String id) {
 		List_G4 list = this.listService.getListByUserId(id_user, id_list);
 		Item_G4 item = this.getItemById(list.getItems(), id);
 		list.getItems().remove(item);

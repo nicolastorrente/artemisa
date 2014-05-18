@@ -31,7 +31,7 @@ public class ListController {
 	 * @HTTP status 404: si el id enviado no pertenece a ningun usuario o a ninguna lista
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
-	public @ResponseBody ResponseEntity<List_G4> getList(@PathVariable Long id_user, @PathVariable Long id) {
+	public @ResponseBody ResponseEntity<List_G4> getList(@PathVariable String id_user, @PathVariable String id) {
 		try{
 			List_G4 list = this.listService.getListByUserId(id_user, id);
 			return new ResponseEntity<List_G4>(list, HttpStatus.OK);
@@ -47,7 +47,7 @@ public class ListController {
 	 * @HTTP status 404: si el id enviado no pertenece a ningun usuario
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	public @ResponseBody ResponseEntity<List<List_G4>> getAllListsOfUser(@PathVariable Long id_user) {
+	public @ResponseBody ResponseEntity<List<List_G4>> getAllListsOfUser(@PathVariable String id_user) {
 		try{
 			return new ResponseEntity<List<List_G4>>(this.listService.getListsFromUser(id_user), HttpStatus.OK);
 		}catch(ObjectNotFoundException e){
@@ -63,7 +63,7 @@ public class ListController {
 	 * @HTTP status: 406 Si ya existe el nombre de lista enviado 
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public @ResponseBody ResponseEntity<List_G4> createList(@PathVariable Long id_user, @RequestBody List_G4 list) {
+	public @ResponseBody ResponseEntity<List_G4> createList(@PathVariable String id_user, @RequestBody List_G4 list) {
 		try{
 			return new ResponseEntity<List_G4>(this.listService.create(id_user, list),HttpStatus.OK);
 		}catch(ListAlreadyExistsException e){
@@ -82,7 +82,7 @@ public class ListController {
 	 * @HTTP status 404: cuando no se encuentra la lista enviada por parámetro
 	 */
 	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
-	public @ResponseBody ResponseEntity<List_G4> deleteList(@PathVariable Long id_user, @PathVariable Long id) {
+	public @ResponseBody ResponseEntity<List_G4> deleteList(@PathVariable String id_user, @PathVariable String id) {
 		try{
 			this.listService.delete(id_user, id);
 			return new ResponseEntity<List_G4>(HttpStatus.OK);

@@ -14,7 +14,7 @@ public interface ListService {
 	 * @return List_G4
 	 * @throws ObjectNotFoundException si no se encuentra el usuario
 	 */
-	public List_G4 create(Long id_user, List_G4 list);
+	public List_G4 create(String id_user, List_G4 list);
 	
 	/**
 	 * 
@@ -23,7 +23,7 @@ public interface ListService {
 	 * @return List_G4
 	 * throws ObjectNotFoundException si no existe el usuario o la lista buscada
 	 */
-	public List_G4 getListByUserId(Long id_user, Long id_list);
+	public List_G4 getListByUserId(String id_user, String id_list);
 
 	/**
 	 * 
@@ -31,7 +31,7 @@ public interface ListService {
 	 * @return List<List_G4>
 	 * throws ObjectNotFoundException si no existe el usuario
 	 */
-	public List<List_G4> getListsFromUser(Long id_user);
+	public List<List_G4> getListsFromUser(String id_user);
 
 	/**
 	 * 
@@ -39,7 +39,7 @@ public interface ListService {
 	 * @param id
 	 * @throws ObjectNotFoundException si no se encuentra el usuario o la lista enviados por parámetro
 	 */
-	public void delete(Long id_user, Long id);
+	public void delete(String id_user, String id);
 	
 	/**
 	 * 
@@ -47,6 +47,6 @@ public interface ListService {
 	 * @param id
 	 * @throws ObjectNotFoundException si no se encuentra el usuario o la lista enviados por parámetro
 	 */
-	public List_G4 getListById(List<List_G4> lists, final Long id);
+	public List_G4 getListById(List<List_G4> lists, final String id);
 
 }

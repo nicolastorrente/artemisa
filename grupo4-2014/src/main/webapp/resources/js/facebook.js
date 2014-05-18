@@ -5,10 +5,6 @@ var user_name;
 function statusChangeCallback(response) {
 	if (response.status === 'connected') {
 		testAPI();
-	} else if (response.status === 'not_authorized') {
-		document.getElementById('status').innerHTML = 'Please log ' + 'into this app.';
-	} else {
-		document.getElementById('status').innerHTML = 'Please log ' + 'into Facebook.';
 	}
 }
 
@@ -25,10 +21,10 @@ window.fbAsyncInit = function() {
 		xfbml : true,
 		version : 'v2.0'
 	});
-
+	
 	FB.login(function() {
 	}, {
-		scope : 'publish_actions'
+		scope : 'user_friends,publish_actions,email,user_likes'
 	});
 
 	FB.getLoginStatus(function(response) {
@@ -52,24 +48,6 @@ function testAPI() {
 		access_token = FB.getAuthResponse()['accessToken'];
 		user_name = response.name;
 		user_id = response.id;
-		document.getElementById('status').innerHTML = 'Gracias por loguearte, ' + response.name;
-		alert(user_name + " tu token es:\n\n" + access_token + "\n\nY tu id: " + user_id);
+		login(user_id, user_name, access_token);
 	});
 }
-
-$('#publicar_Muro').on('click', function() {
-	FB.ui({
-		method : 'feed',
-		name : 'Test 1',
-		caption : 'prueba de publicar en muro',
-		description : ('gfgfgdfgasdfadf dfghfhfdgdfgdfgdfgdfgfsdfsdf.'),
-		link : 'http://www.frba.utn.edu.ar/',
-		picture : 'http://www.fbrell.com/public/f8.jpg'
-	}, function(response) {
-		if (response && response.post_id) {
-			alert('Publicado exitosamente.');
-		} else {
-			alert('No se pudo publicar :(.');
-		}
-	});
-});

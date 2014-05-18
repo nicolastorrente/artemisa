@@ -3,3 +3,4 @@ app.model = {};
 app.model.users = {};
 app.model.selectedList;
 app.model.selectedItem;
+app.model.loggedUser = {};

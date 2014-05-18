@@ -10,17 +10,17 @@ import ar.com.frba.utn.tacs.grupocuatro.domain.User_G4;
 @Service
 public class MockService {
 	
-	private long mockId = 0;
+	private Long mockId = 0l;
 	
-	public List_G4 createMockList(Long id){
+	public List_G4 createMockList(String id){
 		return this.createMockList(id, "jack", 3);
 	}
 	
-	private long getMockId(){
-		return ++mockId;
+	private String getMockId(){
+		return (++mockId).toString();
 	}
 	
-	public List_G4 createMockList(Long id, String name, int count){
+	public List_G4 createMockList(String id, String name, int count){
 		List_G4 list = new List_G4();
 		list.setName(name);
 		list.setId(id);
@@ -43,11 +43,11 @@ public class MockService {
 		return col;
 	}
 
-	public Item_G4 createMockItem(Long id) {
+	public Item_G4 createMockItem(String id) {
 		return this.createMockItem(id, "labelItem"+id);
 	}
 	
-	private Item_G4 createMockItem(Long id, String label) {
+	private Item_G4 createMockItem(String id, String label) {
 		Item_G4 item = new Item_G4(label);
 		item.setId(id);
 		item.incVotes();
@@ -63,11 +63,11 @@ public class MockService {
 		return list;
 	}
 
-	public User_G4 createMockUser(Long id) {
+	public User_G4 createMockUser(String id) {
 		return this.createMockUser(id, "Angus");
 	}
 	
-	public User_G4 createMockUser(Long id, String name) {
+	public User_G4 createMockUser(String id, String name) {
 		User_G4 user = new User_G4(name);
 		user.setId(id);
 		user.setLists(this.createMockListOfList());

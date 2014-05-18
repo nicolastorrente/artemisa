@@ -15,7 +15,7 @@ import ar.com.frba.utn.tacs.grupocuatro.exceptions.ObjectNotFoundException;
 @Service
 public class ListServiceMemory implements ListService {
 	
-	long lastId = 0;
+	private Long lastId = 0l;
 	@Autowired
 	private UserService userService;
 
@@ -29,19 +29,19 @@ public class ListServiceMemory implements ListService {
 	}
 
 	@Override
-	public List_G4 create(Long id_user, List_G4 list) {
+	public List_G4 create(String id_user, List_G4 list) {
 		List<List_G4> lists = this.getListsFromUser(id_user);
 		if(this.exists(lists, list)){
 			throw new ListAlreadyExistsException("En la lista ya existe una con ese nombre");
 		}
-		list.setId(++lastId);
+		list.setId((++lastId).toString());
 		lists.add(list);
 		return list;
 	}
 	
 
 	@Override
-	public List_G4 getListByUserId(Long id_user, Long id_list) {
+	public List_G4 getListByUserId(String id_user, String id_list) {
 		User_G4 user = this.userService.getById(id_user);
 		if (user == null) {
 			throw new ObjectNotFoundException("No existe el usuario buscado");
@@ -50,7 +50,7 @@ public class ListServiceMemory implements ListService {
 	}
 
 	@Override
-	public List<List_G4> getListsFromUser(Long id_user) {
+	public List<List_G4> getListsFromUser(String id_user) {
 		User_G4 user = this.userService.getById(id_user);
 		if (user == null) {
 			throw new ObjectNotFoundException("No existe el usuario buscado");
@@ -59,14 +59,14 @@ public class ListServiceMemory implements ListService {
 	}
 
 	@Override
-	public void delete(Long id_user, Long id) {
+	public void delete(String id_user, String id) {
 		List<List_G4> lists = this.getListsFromUser(id_user);
 		List_G4 list = this.getListById(lists, id);
 		lists.remove(list);
 	}
 	
 	@Override
-	public List_G4 getListById(List<List_G4> lists, final Long id) {
+	public List_G4 getListById(List<List_G4> lists, final String id) {
 		List_G4 list = (List_G4) CollectionUtils.find(lists, new Predicate() {
 							@Override
 							public boolean evaluate(Object list) {

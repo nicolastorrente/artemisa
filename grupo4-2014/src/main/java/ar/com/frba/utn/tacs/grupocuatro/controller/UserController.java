@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,10 +35,9 @@ public class UserController {
 	 * @HTTP status: 406 Si ya existe el nombre de usuario enviado
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public @ResponseBody ResponseEntity<User_G4> createUser(@RequestBody User_G4 user) {
+	public @ResponseBody ResponseEntity<User_G4> login(@RequestBody User_G4 user, @RequestHeader String accessToken) {
 		try{
-			this.service.create(user);
-			return new ResponseEntity<User_G4>(user, HttpStatus.CREATED);
+			return new ResponseEntity<User_G4>(this.service.login(user, accessToken), HttpStatus.CREATED);
 		}catch(UserCreationException e){
 			return new ResponseEntity<User_G4>(HttpStatus.BAD_REQUEST);
 		}catch(UserAlreadyExistsException e){
@@ -53,11 +53,27 @@ public class UserController {
 	 * @HTTP status: 404 Si el id enviado no pertenece a ningún usuario
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
-	public @ResponseBody ResponseEntity<User_G4> getUser(@PathVariable Long id) {
+	public @ResponseBody ResponseEntity<User_G4> getUser(@PathVariable String id) {
 		try{
 			return new ResponseEntity<User_G4>(this.service.getById(id), HttpStatus.OK);
 		}catch(ObjectNotFoundException e){
 			return new ResponseEntity<User_G4>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	/**
+	 * GET USER FRIENDS
+	 * 
+	 * @param id
+	 * @return List<User_G4>
+	 * @HTTP status: 404 Si el id enviado no pertenece a ningún usuario
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = "/{id}/friends")
+	public @ResponseBody ResponseEntity<List<User_G4>> getUserFriends(@PathVariable String id) {
+		try{
+			return new ResponseEntity<List<User_G4>>(this.service.getFriends(), HttpStatus.OK);
+		}catch(ObjectNotFoundException e){
+			return new ResponseEntity<List<User_G4>>(HttpStatus.NOT_FOUND);
 		}
 	}
 
@@ -69,24 +85,6 @@ public class UserController {
 	@RequestMapping(method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<List<User_G4>> getAllUsers() {
 		return new ResponseEntity<List<User_G4>>(this.service.getAll(), HttpStatus.OK);
-	}
-
-	/**
-	 * DELETE USER
-	 * 
-	 * @param id
-	 * @return
-	 * @HTTP status 200: si se borro correctamente el usuario
-	 * @HTTP status 400: cuando no se encuentra el usuario enviado por parámetro
-	 */
-	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
-	public @ResponseBody ResponseEntity<User_G4> delete(@PathVariable Long id) {
-		try{
-			this.service.delete(id);
-			return new ResponseEntity<User_G4>(HttpStatus.OK);
-		}catch(ObjectNotFoundException e){
-			return new ResponseEntity<User_G4>(HttpStatus.NOT_FOUND);
-		}
 	}
 
 }
