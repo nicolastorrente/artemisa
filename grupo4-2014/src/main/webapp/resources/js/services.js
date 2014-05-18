@@ -151,21 +151,6 @@ function login(id, name, access_token) {
 		});
 }
 
-function getUser(id, name) {
-	  $.ajax({
-		    url : "/users/" + id,
-		    type: "GET",
-		    success: function(data, textStatus, jqXHR)
-		    {
-		    	loadFriends(false);
-		    },
-		    error: function (jqXHR, textStatus, errorThrown)
-		    {
-		    	addUser(id, name);
-		    }
-		});
-};
-
 $(function addListModal() {
 	  $('#AgregarLista').on('click', function () {
 		  var userjson = {};
@@ -178,7 +163,10 @@ $(function addListModal() {
 			    contentType: 'application/json',
 			    success: function(data, textStatus, jqXHR)
 			    {
-			    	$('#lista_nombre').val("");
+			    	$('#publicar_Muro').show("");
+			    	$('#AgregarLista').hide("");
+			    	$('#listaExito').show("");
+			    	$('#lista_nombre').hide("");
 			    	loadListsFrom(app.model.userSelected.id,false);
 			    },
 			    error: function (jqXHR, textStatus, errorThrown)
@@ -189,6 +177,19 @@ $(function addListModal() {
 			});
 	  });
 });
+
+function refreshListModal() {
+	$('#lista_nombre').val("");
+	$('#publicar_Muro').hide("");
+	$('#AgregarLista').show("");
+	$('#listaExito').hide("");
+	$('#lista_nombre').show("");
+}
+
+$('#CerrarModalLiastas').on('click', function() {
+	refreshListModal();
+});
+
 
 $(function addItemLaunch() {
 	  $('#addItemLaunch').on('click', function () {

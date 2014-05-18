@@ -29,8 +29,7 @@
         		</script>
         		<script id="rowTemplateUsersActive" type="text/html">
         	    	<a href="#userLists" class="list-group-item active" id="{{USER_ID}}">{{USER}}</a>
-        		</script>
-			  </div>
+        		</script>			  </div>
 		  	</div>
 	      </div>
 	      <div class='col-md-5'>
@@ -49,11 +48,15 @@
 			                <div class="modal-body">
 			                
 			                <input name="lista_nombre" id="lista_nombre" type="text" maxlength="15" placeholder="Nombre de la lista" class="form-control" autofocus="autofocus"/>
+			                <div id="listaExito" style="display: none;">
+			                <h4>Lista creada con exito, publicalo en tu muro!</h4>
+			                </div>
 			                
 			                </div>
 			                <div class="modal-footer">
-			                	<button id="AgregarLista" type="submit" class="btn btn-primary pull-left" data-dismiss="modal">Agregar</button>
-			                	<button type="submit" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+			                	<button id="AgregarLista" type="submit" class="btn btn-primary pull-left">Agregar</button>
+			                	<button id="publicar_Muro" type="button" class="btn btn-default" style="display: none" data-dismiss="modal">Publicar en muro</button>
+			                	<button id="CerrarModalLiastas" type="submit" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 			                </div>
 			            </div>
 			        </div>
