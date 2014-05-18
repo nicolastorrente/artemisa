@@ -162,7 +162,6 @@ $(function addListModal() {
 			    contentType: 'application/json',
 			    success: function(data, textStatus, jqXHR)
 			    {
-			    	$('#lista_nombre').val("");
 			    	$('#publicar_Muro').show("");
 			    	$('#AgregarLista').hide("");
 			    	$('#listaExito').show("");
@@ -178,14 +177,18 @@ $(function addListModal() {
 	  });
 });
 
-$(function refreshListModal() {
-	  $('#CerrarModalLiastas').on('click', function () {
-	    	$('#publicar_Muro').hide("");
-	    	$('#AgregarLista').show("");
-	    	$('#listaExito').hide("");
-	    	$('#lista_nombre').show("");
-	  });
+function refreshListModal() {
+	$('#lista_nombre').val("");
+	$('#publicar_Muro').hide("");
+	$('#AgregarLista').show("");
+	$('#listaExito').hide("");
+	$('#lista_nombre').show("");
+}
+
+$('#CerrarModalLiastas').on('click', function() {
+	refreshListModal();
 });
+
 
 $(function addItemLaunch() {
 	  $('#addItemLaunch').on('click', function () {

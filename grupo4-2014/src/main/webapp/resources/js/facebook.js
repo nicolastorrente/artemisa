@@ -60,7 +60,7 @@ function testAPI() {
 $('#publicar_Muro').on('click', function() {
 	FB.ui({
 		method : 'feed',
-		name : 'Aplicacion grupo 4',
+		name : 'Mirá la lista que cree: ' + $('#lista_nombre').val(),
 		caption : 'TACS',
 		description : ('UTN - FRBA - 2014'),
 		link : 'http://www.frba.utn.edu.ar/',
@@ -68,8 +68,10 @@ $('#publicar_Muro').on('click', function() {
 	}, function(response) {
 		if (response && response.post_id) {
 			alert('Publicado exitosamente.');
+			refreshListModal();
 		} else {
 			alert('No se pudo publicar :(.');
+			refreshListModal();
 		}
 	});
 });
