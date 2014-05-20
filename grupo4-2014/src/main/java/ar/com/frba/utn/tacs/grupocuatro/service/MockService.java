@@ -50,8 +50,8 @@ public class MockService {
 	private Item_G4 createMockItem(String id, String label) {
 		Item_G4 item = new Item_G4(label);
 		item.setId(id);
-		item.incVotes();
-		item.incVotes();
+		item.incVotes(getMockId());
+		item.incVotes(getMockId());
 		return item;
 	}
 

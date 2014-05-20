@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ar.com.frba.utn.tacs.grupocuatro.domain.Item_G4;
 import ar.com.frba.utn.tacs.grupocuatro.exceptions.ItemAlreadyExistsException;
 import ar.com.frba.utn.tacs.grupocuatro.exceptions.ObjectNotFoundException;
+import ar.com.frba.utn.tacs.grupocuatro.exceptions.UserAlreadyVoteException;
 import ar.com.frba.utn.tacs.grupocuatro.service.ItemService;
 
 @Controller
@@ -48,6 +49,8 @@ public class ItemController {
 			return new ResponseEntity<Item_G4>(this.itemService.voteItem(id_user, id_list, id),HttpStatus.OK);
 		}catch(ObjectNotFoundException e){
 			return new ResponseEntity<Item_G4>(HttpStatus.NOT_FOUND);
+		}catch(UserAlreadyVoteException e){
+			return new ResponseEntity<Item_G4>(HttpStatus.EXPECTATION_FAILED);
 		}
 	}
 	

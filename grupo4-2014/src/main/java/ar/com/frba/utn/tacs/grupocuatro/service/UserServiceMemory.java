@@ -21,7 +21,7 @@ import com.restfb.types.User;
 public class UserServiceMemory implements UserService {
 	
 	private List<User_G4> friends = new ArrayList<User_G4>();
-	private User_G4 loggedUser;
+	private static User_G4 loggedUser;
 	private FacebookClient facebookClient;
 	private final static String APP_SECRET = "30aacedb87868e4f4fa7728fe4e27e2d";
 	
@@ -38,6 +38,10 @@ public class UserServiceMemory implements UserService {
 		return user;
 	}
 	
+	public static User_G4 getLoggedUser(){
+		return loggedUser;
+	}
+	
 	private User_G4 getUserById(final String id) {
 		User_G4 user = (User_G4) CollectionUtils.find(this.friends, new Predicate() {
 							@Override
@@ -45,8 +49,8 @@ public class UserServiceMemory implements UserService {
 								return ((User_G4) user).getId().equals(id);
 							}
 						});
-		if(user == null && this.loggedUser != null && this.loggedUser.getId().equals(id))
-			user = this.loggedUser;
+		if(user == null && loggedUser != null && loggedUser.getId().equals(id))
+			user = loggedUser;
 		return user;
 	}
 	
@@ -64,15 +68,15 @@ public class UserServiceMemory implements UserService {
 	}
 
 	@Override
-	public User_G4 login(User_G4 loggedUser, String accessToken) {
+	public User_G4 login(User_G4 loggedU, String accessToken) {
 		this.facebookClient = new DefaultFacebookClient(accessToken, APP_SECRET);
-		User_G4 user = this.getUserById(loggedUser.getId());
+		User_G4 user = this.getUserById(loggedU.getId());
 		if(user == null){
-			this.loggedUser = this.verify(loggedUser);
+			loggedUser = this.verify(loggedU);
 		}else{
-			this.loggedUser = user;
+			loggedUser = user;
 		}
-		return this.loggedUser;
+		return loggedUser;
 	}
 
 	@Override

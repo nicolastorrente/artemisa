@@ -46,7 +46,7 @@ public class ItemServiceMemory implements ItemService{
 	public Item_G4 voteItem(String id_user, String id_list, String id) {
 		List_G4 list = this.listService.getListByUserId(id_user, id_list);
 		Item_G4 item = this.getItemById(list.getItems(), id);
-		item.incVotes();
+		item.incVotes(UserServiceMemory.getLoggedUser().getId());
 		return item;
 	}
 	

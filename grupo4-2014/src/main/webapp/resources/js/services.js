@@ -102,6 +102,7 @@ function showItemsFrom(listId){
 	 	list.items[items[k].id] = items[k]; 
 	 }
 	 $('#listOfItems a').click(selectItem);
+	 $('#votar_Item').prop('disabled', false);
 }
 
 function loadlist(listId){
@@ -124,6 +125,18 @@ function selectItem() {
 	 $(this).addClass('active');
 	 var itemId = $(this).attr('id');
 	 app.model.selectedItem = app.model.selectedList.items[itemId];
+	 var voters = app.model.selectedItem.voters;
+	 var voted = false;
+	 for(var v in voters){
+		 if(voters[v] == app.model.loggedUser.id){
+			 $('#votar_Item').prop('disabled', true);
+			 voted = true;
+			 break;
+		 }
+	 }
+	 if(!voted){
+		 $('#votar_Item').prop('disabled', false);
+	 }
 }
 
 function login(id, name, access_token) {
@@ -279,6 +292,7 @@ $(function voteItem() {
 				  success: function(data, textStatus, jqXHR)
 				  {
 					  app.model.selectedItem.votes++;
+					  app.model.selectedItem.voters.push(app.model.loggedUser.id);
 					  showItemsFrom(app.model.selectedList.id);
 				  },
 				  error: function (jqXHR, textStatus, errorThrown)
