@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+	<head th:substituteby="header :: copy">
+		<style type='text/css'>
+			
+		</style>
+	</head>
+	<body>
+		<div id='content' class='row'>
+	      <div class='col-md-3'>
+			<div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h1 class="panel-title">Yo</h1>
+			  </div>
+			  <div class="panel-body" style="height:72px">
+			  	<ul id="myLists" class="list-group">
+			  		<!-- Mis Listas -->
+			  	</ul>
+			  </div>	 
+			</div>     
+	        <div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h1 class="panel-title">Amigos</h1>
+			  </div>
+			  <div id="body-users" class="panel-body"  style="overflow-y: auto;">
+			  	<ul id="listFriends" class="list-group"/>
+        		<script id="rowTemplateUsers" type="text/html">
+        	    	<a href="#userLists" class="list-group-item" id="{{USER_ID}}">{{USER}}</a>
+        		</script>
+        		<script id="rowTemplateUsersActive" type="text/html">
+        	    	<a href="#userLists" class="list-group-item active" id="{{USER_ID}}">{{USER}}</a>
+        		</script>			  </div>
+		  	</div>
+	      </div>
+	      <div class='col-md-5'>
+	        <div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h1 id="labelPanelLists" class="panel-title">Listas del usuario...</h1>
+			  </div>
+			  <div id="body-lists" class="panel-body" style="overflow-y: auto;">
+			  	<!-- Modal listas -->
+			    <div class="modal fade" id="lista" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			        <div class="modal-dialog">
+			            <div class="modal-content">
+			                <div class="modal-header modal-header-primary">
+			                    <h1><i class="glyphicon glyphicon-list"></i> Agregar Lista</h1>
+			                </div>
+			                <div class="modal-body">
+			                
+			                <input name="lista_nombre" id="lista_nombre" type="text" maxlength="15" placeholder="Nombre de la lista" class="form-control" autofocus="autofocus"/>
+			                <div id="listaExito" style="display: none;">
+			                <h4>Lista creada con exito, publicalo en tu muro!</h4>
+			                </div>
+			                
+			                </div>
+			                <div class="modal-footer">
+			                	<button id="AgregarLista" type="submit" class="btn btn-primary pull-left">Agregar</button>
+			                	<button id="publicar_Muro" type="button" class="btn btn-default" style="display: none" data-dismiss="modal">Publicar en muro</button>
+			                	<button id="CerrarModalLiastas" type="submit" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			    <!-- Modal listas -->
+				<ul id="listOfList" class="list-group"/>
+        		<script id="rowTemplateLists" type="text/html">
+        	    	<a href="#itemsList" class="list-group-item" id="{{ID_LIST}}">{{LIST}}</a>
+        		</script>
+        		<script id="rowTemplateListsActive" type="text/html">
+        	    	<a href="#itemsListActive" class="list-group-item active" id="{{ID_LIST}}">{{LIST}}</a>
+        		</script>
+			  </div>
+			  
+			    <div id="noListSelectedModal" class="modal fade">
+				  <div class="modal-dialog">
+				    <div class="modal-content">
+				      <div class="modal-body">
+				        <p><h4>No hay ninguna lista seleccionada!</h4></p>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+				      </div>
+				    </div><!-- /.modal-content -->
+				  </div><!-- /.modal-dialog -->
+				</div><!-- /.modal -->
+			  
+        		 <!-- botones de lista -->
+        		<div class="btn-group pull-left" style="margin-top: 17px">
+				  <button type="button" class="btn btn-default" href="#lista" data-toggle="modal"><span class="glyphicon glyphicon-plus"></span> Agregar lista</button>
+				</div>
+				<div class="btn-group pull-right" style="margin-top: 17px">
+				  <button id="eliminar_Lista" type="button" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span></button>
+				</div>
+				<!-- botones de lista -->  
+		  	</div>
+	      </div>
+	      <div class='col-md-4'>
+	        <div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h1 id="labelPanelItems" class="panel-title">Item de la lista...</h1>
+			  </div>
+			  <div id="body-items" class="panel-body" style="overflow-y: auto;">
+			  	<!-- Modal items -->
+			    <div class="modal fade" id="item" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			        <div class="modal-dialog">
+			            <div class="modal-content">
+			                <div class="modal-header modal-header-primary">
+			                    <h1><i class="glyphicon glyphicon-tag"></i> Agregar Item</h1>
+			                </div>
+			                <div class="modal-body">
+			                
+			                <input name="item-label" id="item-label" type="text" maxlength="15" placeholder="Nombre del item" class="form-control" autofocus="autofocus"/>
+			                
+			                </div>
+			                <div class="modal-footer">
+			                	<button id="AgregarItem" type="submit" class="btn btn-primary pull-left" data-dismiss="modal">Agregar</button>
+			                	<button type="submit" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			    <!-- Modal items -->
+			    <ul id="listOfItems" class="list-group"/>
+			    <script id="rowTemplateItems" type="text/html">
+       	    		<a href="#incItem" class="list-group-item" id="{{ID_ITEM}}"><span class="badge">{{VOTES}}</span>{{ITEM}}</a>
+        		</script>
+        		<script id="rowTemplateItemsActive" type="text/html">
+       	    		<a href="#incItemActive" class="list-group-item active" id="{{ID_ITEM}}"><span class="badge">{{VOTES}}</span>{{ITEM}}</a>
+        		</script>
+			  </div>
+			  
+			  	<div id="noItemSelectedModal" class="modal fade">
+				  <div class="modal-dialog">
+				    <div class="modal-content">
+				      <div class="modal-body">
+				        <p><h4>No hay ninguna item seleccionado!</h4></p>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+				      </div>
+				    </div><!-- /.modal-content -->
+				  </div><!-- /.modal-dialog -->
+				</div><!-- /.modal -->
+			  
+        		<!-- botones de item -->
+        		<div class="btn-group pull-left" style="margin-top: 17px">
+				  <button id="addItemLaunch" type="button" class="btn btn-default" href="#item"><span class="glyphicon glyphicon-plus"></span> Agregar item</button>
+				</div>
+				<div class="btn-group pull-right" style="margin-top: 17px">
+				  <button id="votar_Item" type="button" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+				  <button id="eliminar_Item" type="button" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span></button>
+				</div>
+				<!-- botones de item --> 
+		  	</div>
+	      </div>
+		</div>
+	    <div th:substituteby="footer :: copy"></div>
+	</body>
+	<script language="javascript">
+        function autoResizeDiv()
+        {
+        	var bodyHeight = window.innerHeight - 150;
+            document.getElementById('content').style.height = bodyHeight +'px';
+            document.getElementById('body-users').style.height = (bodyHeight - 190) +'px';
+            document.getElementById('body-lists').style.height = (bodyHeight - 108) +'px';
+            document.getElementById('body-items').style.height = (bodyHeight - 108) +'px';
+        }
+        window.onresize = autoResizeDiv;
+        autoResizeDiv();
+    </script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="/resources/js/jquery-2.1.1.min.js"></script>
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script src="/resources/js/bootstrap.js"></script>
+	<script src="/resources/js/application.js"></script>
+	<script src="/resources/js/services.js"></script>
+	<script src="/resources/js/facebook.js"></script>
+</html>

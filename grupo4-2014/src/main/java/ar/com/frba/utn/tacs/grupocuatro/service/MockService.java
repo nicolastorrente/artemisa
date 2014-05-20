@@ -2,25 +2,28 @@ package ar.com.frba.utn.tacs.grupocuatro.service;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.stereotype.Service;
-
 import ar.com.frba.utn.tacs.grupocuatro.domain.Item_G4;
 import ar.com.frba.utn.tacs.grupocuatro.domain.List_G4;
 import ar.com.frba.utn.tacs.grupocuatro.domain.User_G4;
 
 @Service
 public class MockService {
-
+	
+	private Long mockId = 0l;
+	
 	public List_G4 createMockList(String id){
 		return this.createMockList(id, "jack", 3);
+	}
+	
+	private String getMockId(){
+		return (++mockId).toString();
 	}
 	
 	public List_G4 createMockList(String id, String name, int count){
 		List_G4 list = new List_G4();
 		list.setName(name);
-		list.setMockStatus("got");
-		list.setId(Long.parseLong(id));
+		list.setId(id);
 		list.setItems(this.createMockListItem(count));
 		return list;
 	}
@@ -28,37 +31,35 @@ public class MockService {
 	private List<Item_G4> createMockListItem(int count){
 		List<Item_G4> list = new ArrayList<Item_G4>();
 		for(int i = 0; i < count; i++)
-			list.add(this.createMockItem(""+(count+1), "labelItem"+(count+1)));
+			list.add(this.createMockItem(getMockId(), "labelItem"+(i+1)));
 		return list;
 	}
 
 	public List<List_G4> createMockListOfList() {
 		List<List_G4> col = new ArrayList<List_G4>();
-		col.add(this.createMockList("12341","list1",2));
-		col.add(this.createMockList("12342","list2",3));
-		col.add(this.createMockList("12343","list3",1));
+		col.add(this.createMockList(getMockId(),"list"+getMockId(),2));
+		col.add(this.createMockList(getMockId(),"list"+getMockId(),3));
+		col.add(this.createMockList(getMockId(),"list"+getMockId(),1));
 		return col;
 	}
 
 	public Item_G4 createMockItem(String id) {
-		return this.createMockItem(id, "labelItem");
+		return this.createMockItem(id, "labelItem"+id);
 	}
 	
 	private Item_G4 createMockItem(String id, String label) {
-		Item_G4 item = new Item_G4();
-		item.setId(Long.parseLong(id));
-		item.setMockStatus("got");
-		item.setLabel(label);
-		item.incVotes();
-		item.incVotes();
+		Item_G4 item = new Item_G4(label);
+		item.setId(id);
+		item.incVotes(getMockId());
+		item.incVotes(getMockId());
 		return item;
 	}
 
 	public List<Item_G4> createMockListOfItem() {
 		List<Item_G4> list = new ArrayList<Item_G4>();
-		list.add(this.createMockItem("12341", "labelItem1"));
-		list.add(this.createMockItem("12342", "labelItem2"));
-		list.add(this.createMockItem("12343", "labelItem3"));
+		list.add(this.createMockItem(getMockId(), "labelItem"+getMockId()));
+		list.add(this.createMockItem(getMockId(), "labelItem"+getMockId()));
+		list.add(this.createMockItem(getMockId(), "labelItem"+getMockId()));
 		return list;
 	}
 
@@ -66,21 +67,19 @@ public class MockService {
 		return this.createMockUser(id, "Angus");
 	}
 	
-	private User_G4 createMockUser(String id, String name) {
-		User_G4 user = new User_G4();
-		user.setId(Long.parseLong(id));
-		user.setMockStatus("got");
-		user.setUsername(name);
+	public User_G4 createMockUser(String id, String name) {
+		User_G4 user = new User_G4(name);
+		user.setId(id);
 		user.setLists(this.createMockListOfList());
 		return user;
 	}
 
 	public List<User_G4> createMockListOfUsers() {
 		List<User_G4> list = new ArrayList<User_G4>();
-		list.add(this.createMockUser("12341", "Moe"));
-		list.add(this.createMockUser("12342", "Larry"));
-		list.add(this.createMockUser("12343", "Shemp"));
-		list.add(this.createMockUser("12344", "Curly"));
+		list.add(this.createMockUser(getMockId(), "Moe"));
+		list.add(this.createMockUser(getMockId(), "Larry"));
+		list.add(this.createMockUser(getMockId(), "Shemp"));
+		list.add(this.createMockUser(getMockId(), "Curly"));
 		return list;
 	}
 }

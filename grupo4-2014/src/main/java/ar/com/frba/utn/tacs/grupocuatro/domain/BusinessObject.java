@@ -6,25 +6,13 @@ public class BusinessObject implements Serializable{
 	
 	private static final long serialVersionUID = -1312614820613521796L;
 	
-	private Long id;
+	private String id;
 	
-	private String mockStatus;
-
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
-	
-
-	public String getMockStatus() {
-		return mockStatus;
-	}
-
-	public void setMockStatus(String mockStatus) {
-		this.mockStatus = mockStatus;
-	}
-	
 }

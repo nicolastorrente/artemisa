@@ -5,6 +5,12 @@ import java.util.List;
 
 public class List_G4 extends BusinessObject{
 	
+	public List_G4(String name, List<Item_G4> items) {
+		super();
+		this.name = name;
+		this.items = items;
+	}
+
 	private static final long serialVersionUID = 7053015612840694054L;
 
 	private String name;
