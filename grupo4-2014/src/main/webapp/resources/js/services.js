@@ -228,12 +228,10 @@ $('#AgregarItem').on('click', function() {
 			data : JSON.stringify(userjson),
 			contentType : 'application/json',
 			success : function(data, textStatus, jqXHR) {
-				$('#item-label').val("");
 				loadlist(app.model.selectedList.id);
 				$('#item').modal('hide');
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
-				$('#item-label').val("");
 				$('#alertRepetido').slideDown("slow");
 				$('#item').modal('hide');
 			}
@@ -244,6 +242,7 @@ $('#AgregarItem').on('click', function() {
 
 $('#item').on('show.bs.modal', function() {
 	$('#ingreseItem').hide("");
+	$('#item-label').val("");
 });
 
 $('#eliminar_Lista').on('click', function() {
