@@ -52,7 +52,7 @@ function testAPI() {
 	});
 };
 
-$('#publicar_Muro').on('click', function() {
+function publishToWall(){
 	FB.ui({
 		method : 'feed',
 		name : 'Mirá la lista que cree: ' + $('#lista_nombre').val(),
@@ -62,11 +62,11 @@ $('#publicar_Muro').on('click', function() {
 		picture : 'http://www.fbrell.com/public/f8.jpg'
 	}, function(response) {
 		if (response && response.post_id) {
-			alert('Publicado exitosamente.');
+			$('#alertMuro').slideDown("slow");
 			refreshListModal();
 		} else {
-			alert('No se pudo publicar :(.');
+			// alert('No se pudo publicar :(.'); queda feo mostrar esto
 			refreshListModal();
 		}
 	});
-});
+}
