@@ -7,10 +7,10 @@ import org.junit.Test;
 
 public class UserMemoryTest {
 	
-	private UserServiceMemory userServiceMemory;
+	private UserServiceGAE userServiceMemory;
 
 	public UserMemoryTest() {
-		this.userServiceMemory = new UserServiceMemory();
+		this.userServiceMemory = new UserServiceGAE();
 	}
 	
 	@Test

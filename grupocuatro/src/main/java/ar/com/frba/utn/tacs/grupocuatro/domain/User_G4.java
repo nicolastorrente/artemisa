@@ -1,31 +1,30 @@
 package ar.com.frba.utn.tacs.grupocuatro.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
 
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;
 import com.restfb.types.User;
 
-public class User_G4 extends BusinessObject{
-	
-	private static final long serialVersionUID = -5224827520355279040L;
-
+@Entity
+public class User_G4  implements Serializable{
+	private static final long serialVersionUID = 2595359983700883890L;
+	@Id
+	private Long id;
 	private String username;
-	private List<List_G4> lists;
 	
 	public User_G4(User fbUser) {
 		this();
-		this.setId(fbUser.getId());
+		this.setId(Long.parseLong(fbUser.getId()));
 		this.username = fbUser.getName();
 	}
 	
 	public User_G4() {
 		super();
-		this.lists = new ArrayList<List_G4>();
 	}
 
 	public User_G4(String username) {
 		super();
-		this.lists = new ArrayList<List_G4>();
 		this.username = username;
 	}
 
@@ -37,16 +36,17 @@ public class User_G4 extends BusinessObject{
 		this.username = username;
 	}
 
-	public List<List_G4> getLists() {
-		return lists;
+	public Long getId() {
+		return id;
 	}
 
-	public void setLists(List<List_G4> lists) {
-		this.lists = lists;
+	public void setId(Long id) {
+		this.id = id;
 	}
-	
-	public void addList(List_G4 list){
-		this.lists.add(list);
+
+	@Override
+	public String toString() {
+		return "User_G4 [id=" + id + ", username=" + username + "]";
 	}
 
 }

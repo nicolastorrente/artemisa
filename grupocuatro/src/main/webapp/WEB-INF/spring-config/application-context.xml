@@ -37,4 +37,8 @@
 		<beans:property name="templateEngine" ref="templateEngine" />
 	</beans:bean>
 	
+	<beans:bean id="objectifyFactory" class="com.googlecode.objectify.spring.ObjectifyFactoryBean">
+	    <beans:property name="basePackage" value="ar.com.frba.utn.tacs.grupocuatro.domain"/>
+	</beans:bean>
+	
 </beans:beans>

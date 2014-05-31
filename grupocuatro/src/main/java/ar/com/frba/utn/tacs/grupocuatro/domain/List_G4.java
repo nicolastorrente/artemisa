@@ -1,24 +1,23 @@
 package ar.com.frba.utn.tacs.grupocuatro.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Index;
 
+@Entity
 public class List_G4 extends BusinessObject{
-	
-	public List_G4(String name, List<Item_G4> items) {
-		super();
-		this.name = name;
-		this.items = items;
-	}
-
 	private static final long serialVersionUID = 7053015612840694054L;
 
 	private String name;
-	private List<Item_G4> items;
+	@Index
+	private Long userId;
+	
+	public List_G4(String name) {
+		super();
+		this.name = name;
+	}
 	
 	public List_G4() {
 		super();
-		this.items = new ArrayList<Item_G4>();
 	}
 
 	public String getName() {
@@ -29,16 +28,16 @@ public class List_G4 extends BusinessObject{
 		this.name = name;
 	}
 
-	public List<Item_G4> getItems() {
-		return items;
+	@Override
+	public String toString() {
+		return "List_G4 [name=" + name + ", id=" + getId() + "]";
 	}
 
-	public void setItems(List<Item_G4> items) {
-		this.items = items;
+	public Long getUserId() {
+		return userId;
 	}
-	
-	public void addItem(Item_G4 item){
-		this.items.add(item);
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
-	
 }

@@ -126,6 +126,21 @@
 			<version>${spring.framework.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.googlecode.objectify</groupId>
+			<artifactId>objectify</artifactId>
+			<version>5.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.objectify-appengine-spring</groupId>
+			<artifactId>objectify-appengine-spring</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-jpa_2.0_spec</artifactId>
+			<version>1.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -156,12 +171,6 @@
 					</webResources>
 				</configuration>
 			</plugin>
-
-			<plugin>
-				<groupId>com.google.appengine</groupId>
-				<artifactId>appengine-maven-plugin</artifactId>
-				<version>${appengine.target.version}</version>
-			</plugin>
 		</plugins>
 
 		<testResources>
@@ -171,5 +180,13 @@
 		</testResources>
 
 	</build>
+
+	<repositories>
+		<repository>
+			<id>objectify-appengine</id>
+			<url>http://maven.objectify-appengine.googlecode.com/git/</url>
+		</repository>
+	</repositories>
+
 
 </project>

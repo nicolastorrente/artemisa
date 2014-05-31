@@ -27,7 +27,7 @@ public interface UserService {
 	 * @param id: ID de usuario.
 	 * @return User_G4.
 	 */
-	public User_G4 getById(String id);
+	public User_G4 getById(Long id);
 
 	/**
 	 * GET ALL
@@ -55,5 +55,5 @@ public interface UserService {
 	 * @return Lista de amigos del usuario logueado
 	 */
 	public List<User_G4> getFriends();
-
+	
 }
