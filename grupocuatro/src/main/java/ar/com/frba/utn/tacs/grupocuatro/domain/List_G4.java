@@ -1,9 +1,11 @@
 package ar.com.frba.utn.tacs.grupocuatro.domain;
 
+import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 
 @Entity
+@Cache
 public class List_G4 extends BusinessObject{
 	private static final long serialVersionUID = 7053015612840694054L;
 

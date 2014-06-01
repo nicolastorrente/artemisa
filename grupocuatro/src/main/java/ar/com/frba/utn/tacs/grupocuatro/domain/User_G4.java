@@ -2,11 +2,13 @@ package ar.com.frba.utn.tacs.grupocuatro.domain;
 
 import java.io.Serializable;
 
+import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.restfb.types.User;
 
 @Entity
+@Cache
 public class User_G4  implements Serializable{
 	private static final long serialVersionUID = 2595359983700883890L;
 	@Id
