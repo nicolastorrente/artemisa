@@ -1,5 +1,7 @@
 package ar.com.frba.utn.tacs.grupocuatro.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +26,18 @@ public class ItemController {
 	private ItemService itemService;
 	
 	/**
+	 * Devuelve los items de una lista
 	 * 
-	 * @param id_user
+	 * @param id_list
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.GET)
+	public @ResponseBody ResponseEntity<List<Item_G4>> getItemsFromList(@PathVariable Long id_list){
+		return new ResponseEntity<List<Item_G4>>(this.itemService.getItemsFromList(id_list), HttpStatus.OK);
+	}
+	
+	/**
+	 * 
 	 * @param id_list
 	 * @param item
 	 * @return Item_G4
@@ -33,9 +45,9 @@ public class ItemController {
 	 * @HTTP status: 406 Si ya existe un item con el nombre del item enviado 
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public @ResponseBody ResponseEntity<Item_G4> createItem(@PathVariable String id_user, @PathVariable String id_list, @RequestBody Item_G4 item){
+	public @ResponseBody ResponseEntity<Item_G4> createItem(@PathVariable Long id_list, @RequestBody Item_G4 item){
 		try{
-			return new ResponseEntity<Item_G4>(this.itemService.create(id_user, id_list, item),HttpStatus.OK);
+			return new ResponseEntity<Item_G4>(this.itemService.create(id_list, item),HttpStatus.OK);
 		}catch(ObjectNotFoundException e){
 			return new ResponseEntity<Item_G4>(HttpStatus.NOT_FOUND);
 		}catch(ItemAlreadyExistsException e){
@@ -44,9 +56,9 @@ public class ItemController {
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "/{id}/vote")
-	public @ResponseBody ResponseEntity<Item_G4> voteItem(@PathVariable String id_user, @PathVariable String id_list, @PathVariable String id){
+	public @ResponseBody ResponseEntity<Item_G4> voteItem(@PathVariable Long id){
 		try{
-			return new ResponseEntity<Item_G4>(this.itemService.voteItem(id_user, id_list, id),HttpStatus.OK);
+			return new ResponseEntity<Item_G4>(this.itemService.voteItem(id),HttpStatus.OK);
 		}catch(ObjectNotFoundException e){
 			return new ResponseEntity<Item_G4>(HttpStatus.NOT_FOUND);
 		}catch(UserAlreadyVoteException e){
@@ -55,9 +67,9 @@ public class ItemController {
 	}
 	
 	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
-	public @ResponseBody ResponseEntity<Item_G4> deleteList(@PathVariable String id_user, @PathVariable String id_list, @PathVariable String id){
+	public @ResponseBody ResponseEntity<Item_G4> deleteList(@PathVariable Long id){
 		try{
-			this.itemService.delete(id_user, id_list, id);
+			this.itemService.delete(id);
 			return new ResponseEntity<Item_G4>(HttpStatus.OK);
 		}catch(ObjectNotFoundException e){
 			return new ResponseEntity<Item_G4>(HttpStatus.NOT_FOUND);

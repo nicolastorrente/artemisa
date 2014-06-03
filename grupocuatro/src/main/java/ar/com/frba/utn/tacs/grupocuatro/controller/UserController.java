@@ -27,7 +27,7 @@ public class UserController {
 	private UserService service;
 
 	/**
-	 * CREATE USER
+	 * CREATE USER OK
 	 * 
 	 * @param user
 	 * @return User_G4
@@ -53,7 +53,7 @@ public class UserController {
 	 * @HTTP status: 404 Si el id enviado no pertenece a ningún usuario
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
-	public @ResponseBody ResponseEntity<User_G4> getUser(@PathVariable String id) {
+	public @ResponseBody ResponseEntity<User_G4> getUser(@PathVariable Long id) {
 		try{
 			return new ResponseEntity<User_G4>(this.service.getById(id), HttpStatus.OK);
 		}catch(ObjectNotFoundException e){
@@ -69,7 +69,7 @@ public class UserController {
 	 * @HTTP status: 404 Si el id enviado no pertenece a ningún usuario
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}/friends")
-	public @ResponseBody ResponseEntity<List<User_G4>> getUserFriends(@PathVariable String id) {
+	public @ResponseBody ResponseEntity<List<User_G4>> getUserFriends(@PathVariable Long id) {
 		try{
 			return new ResponseEntity<List<User_G4>>(this.service.getFriends(), HttpStatus.OK);
 		}catch(ObjectNotFoundException e){
