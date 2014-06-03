@@ -126,6 +126,7 @@
 			<version>${spring.framework.version}</version>
 			<scope>test</scope>
 		</dependency>
+			
 	</dependencies>
 
 	<build>
@@ -139,6 +140,8 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
+			
+		
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
