@@ -82,7 +82,6 @@ function publishVote(){
 	}, function(response) {
 		if (response && response.post_id) {
 			// Exito
-			refreshListModal();
 		} else {
 			// Fracaso
 		}
