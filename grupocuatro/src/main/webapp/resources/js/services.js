@@ -177,30 +177,35 @@ function login(id, name, access_token) {
 }
 
 $('#AgregarLista').on('click', function() {
-	if ($('#lista_nombre').val() == "") {
-		$('#ingreseLista').slideDown("slow");
-	} else {
-		$('#ingreseLista').slideUp("fast");
-		var list = {};
-		list['name'] = $('#lista_nombre').val();
-		$.ajax({
-			url : "/users/" + app.model.userSelected.id + "/lists",
-			type : "POST",
-			data : JSON.stringify(list),
-			contentType : 'application/json',
-			success : function(data, textStatus, jqXHR) {
-				$('#publicar_Muro').slideDown("fast");
-				$('#AgregarLista').hide("");
-				$('#listaExito').slideDown("fast");
-				$('#lista_nombre').hide("");
-				addList(data);
-			},
-			error : function(jqXHR, textStatus, errorThrown) {
-				$('#lista_nombre').val("");
-				$('#alertRepetido').slideDown("slow");
-				$('#lista').modal('hide');
-			}
-		});
+	if(app.model.userSelected.id != user_id){
+		alert("No podes crearle una lista a un amigo");
+	}
+	else{
+		if ($('#lista_nombre').val() == "") {
+			$('#ingreseLista').slideDown("slow");
+		} else {
+			$('#ingreseLista').slideUp("fast");
+			var list = {};
+			list['name'] = $('#lista_nombre').val();
+			$.ajax({
+				url : "/users/" + app.model.userSelected.id + "/lists",
+				type : "POST",
+				data : JSON.stringify(list),
+				contentType : 'application/json',
+				success : function(data, textStatus, jqXHR) {
+					$('#publicar_Muro').slideDown("fast");
+					$('#AgregarLista').hide("");
+					$('#listaExito').slideDown("fast");
+					$('#lista_nombre').hide("");
+					addList(data);
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					$('#lista_nombre').val("");
+					$('#alertRepetido').slideDown("slow");
+					$('#lista').modal('hide');
+				}
+			});
+		}
 	}
 });
 
@@ -259,44 +264,54 @@ $('#item').on('show.bs.modal', function() {
 });
 
 $('#eliminar_Lista').on('click', function() {
-	if (app.model.selectedList) {
-		$.ajax({
-			url : "/users/" + app.model.userSelected.id + "/lists/" + app.model.selectedList.id, // 12341 lista harcodeada 
-			type : "DELETE",
-			success : function(data, textStatus, jqXHR) {
-				delete app.model.userSelected.lists[app.model.selectedList.id];
-				app.model.selectedList = null;
-				showLists(app.model.userSelected, app.model.userSelected.lists, false);
-			},
-			error : function(jqXHR, textStatus, errorThrown) {
-				alert('Error al agregar lista.');
-			}
-		});
-	} else {
-		$('#noListSelectedModal').modal({
-			show : true
-		});
+	if(app.model.userSelected.id != user_id){
+		alert("No podes eliminarle una lista a un amigo");
+	}
+	else {
+		if (app.model.selectedList) {
+			$.ajax({
+				url : "/users/" + app.model.userSelected.id + "/lists/" + app.model.selectedList.id, // 12341 lista harcodeada 
+				type : "DELETE",
+				success : function(data, textStatus, jqXHR) {
+					delete app.model.userSelected.lists[app.model.selectedList.id];
+					app.model.selectedList = null;
+					showLists(app.model.userSelected, app.model.userSelected.lists, false);
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert('Error al agregar lista.');
+				}
+			});
+		} else {
+			$('#noListSelectedModal').modal({
+				show : true
+			});
+		}
 	}
 });
 
 $('#eliminar_Item').on('click', function() {
-	if (app.model.selectedItem) {
-		$.ajax({
-			url : "/users/" + app.model.userSelected.id + "/lists/" + app.model.selectedList.id + "/items/" + app.model.selectedItem.id,
-			type : "DELETE",
-			success : function(data, textStatus, jqXHR) {
-				delete app.model.selectedList.items[app.model.selectedItem.id];
-				app.model.selectedItem = null;
-				showItemsFrom(app.model.selectedList.id, app.model.selectedList.items);
-			},
-			error : function(jqXHR, textStatus, errorThrown) {
-				alert('Error al borrar item.');
-			}
-		});
-	} else {
-		$('#noItemSelectedModal').modal({
-			show : true
-		});
+	if(app.model.userSelected.id != user_id){
+		alert("No podes eliminarle un item a un amigo");
+	}
+	else {
+		if (app.model.selectedItem) {
+			$.ajax({
+				url : "/users/" + app.model.userSelected.id + "/lists/" + app.model.selectedList.id + "/items/" + app.model.selectedItem.id,
+				type : "DELETE",
+				success : function(data, textStatus, jqXHR) {
+					delete app.model.selectedList.items[app.model.selectedItem.id];
+					app.model.selectedItem = null;
+					showItemsFrom(app.model.selectedList.id, app.model.selectedList.items);
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert('Error al borrar item.');
+				}
+			});
+		} else {
+			$('#noItemSelectedModal').modal({
+				show : true
+			});
+		}
 	}
 });
 
@@ -309,6 +324,7 @@ $('#votar_Item').on('click', function(e) {
 				app.model.selectedItem.votes++;
 				app.model.selectedItem.voters.push(app.model.userSelected.id);
 				showItemsFrom(app.model.selectedList.id, app.model.selectedList.items);
+				publishVote();
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
 				alert('Error al votar item.');
