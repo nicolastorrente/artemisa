@@ -70,3 +70,21 @@ function publishToWall(){
 		}
 	});
 }
+
+function publishVote(){
+	FB.ui({
+		method : 'feed',
+		name : 'Vote un item: ', //app.model.selectedItem.id
+		caption : 'TACS',
+		description : ('UTN - FRBA - 2014'),
+		link : 'http://www.frba.utn.edu.ar/',
+		picture : 'http://www.fbrell.com/public/f8.jpg'
+	}, function(response) {
+		if (response && response.post_id) {
+			// Exito
+			refreshListModal();
+		} else {
+			// Fracaso
+		}
+	});
+}
