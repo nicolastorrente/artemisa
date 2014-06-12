@@ -21,10 +21,10 @@ import com.restfb.types.User;
 public class UserServiceGAE implements UserService {
 	
 	@Autowired
-	private OfyService ofyService;
+	public OfyService ofyService;
 	private List<User_G4> friends = new ArrayList<User_G4>();
 	private static User_G4 loggedUser;
-	private FacebookClient facebookClient;
+	public FacebookClient facebookClient;
 	private final static String APP_SECRET = "30aacedb87868e4f4fa7728fe4e27e2d";
 	
 	public UserServiceGAE() {
