@@ -263,6 +263,17 @@ $('#item').on('show.bs.modal', function() {
 	$('#item-label').val("");
 });
 
+
+$('#compartir_Lista').on('click', function() {
+	if (app.model.selectedList) {
+		publishListResult();
+	} else {
+		$('#noListSelectedModal').modal({
+			show : true
+		});
+	}
+});
+
 $('#eliminar_Lista').on('click', function() {
 	if(app.model.userSelected.id != user_id){
 		alert("No podes eliminarle una lista a un amigo");

@@ -87,3 +87,25 @@ function publishVote(){
 		}
 	});
 }
+
+function publishListResult(){
+	var items = $.map(app.model.selectedList.items, function(item) {
+	  return item.label;
+	});
+	var result = '(' + items.join(", ") + ')';
+	FB.ui({
+		method : 'feed',
+		name : app.model.selectedList.name,
+		caption : 'TACS',
+		description : result,
+		link : 'http://www.frba.utn.edu.ar/',
+		picture : 'http://www.fbrell.com/public/f8.jpg',
+	}, function(response) {
+		if (response && response.post_id) {
+			$('#alertMuro').slideDown("slow");
+			refreshListModal();
+		} else {
+			refreshListModal();
+		}
+	});
+}
