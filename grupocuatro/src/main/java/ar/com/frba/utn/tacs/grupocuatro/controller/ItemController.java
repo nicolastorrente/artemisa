@@ -47,7 +47,7 @@ public class ItemController {
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody ResponseEntity<Item_G4> createItem(@PathVariable Long id_list, @RequestBody Item_G4 item){
 		try{
-			return new ResponseEntity<Item_G4>(this.itemService.create(id_list, item),HttpStatus.OK);
+			return new ResponseEntity<Item_G4>(this.itemService.create(id_list, item), HttpStatus.OK);
 		}catch(ObjectNotFoundException e){
 			return new ResponseEntity<Item_G4>(HttpStatus.NOT_FOUND);
 		}catch(ItemAlreadyExistsException e){

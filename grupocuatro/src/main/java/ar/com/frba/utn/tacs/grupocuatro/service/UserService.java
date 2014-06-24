@@ -56,4 +56,13 @@ public interface UserService {
 	 */
 	public List<User_G4> getFriends();
 	
+	/**
+	 * Notifica al usuario
+	 * @param externalUserId
+	 * @param message 
+	 * @throws ObjectNotFoundException: si no existe el usuario
+	 * @throws NotificationException: si el mensaje es inválido
+	 */	
+	public void sendNotification(String externalUserId, String message);
+	
 }

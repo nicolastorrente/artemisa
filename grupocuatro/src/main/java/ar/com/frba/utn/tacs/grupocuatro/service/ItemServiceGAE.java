@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.com.frba.utn.tacs.grupocuatro.domain.Item_G4;
+import ar.com.frba.utn.tacs.grupocuatro.domain.List_G4;
 import ar.com.frba.utn.tacs.grupocuatro.exceptions.ItemAlreadyExistsException;
 
 @Service
@@ -15,6 +16,10 @@ public class ItemServiceGAE implements ItemService{
 	
 	@Autowired
 	private ListService listService;
+	
+	@Autowired
+	private UserService userService;
+	
 	@Autowired
 	public OfyService ofyService;
 
@@ -37,6 +42,11 @@ public class ItemServiceGAE implements ItemService{
 			throw new ItemAlreadyExistsException("Ya existe un item con ese nombre");
 		}
 		item.setListId(id_list);
+		List_G4 list = listService.getListById(id_list);
+		if(UserServiceGAE.getLoggedUser().getId() != list.getUserId()){
+			userService.sendNotification(list.getUserId().toString(),
+					"Han agregado el item " + item.getLabel() + " a tu lista " + list.getName());
+		}
 		ofyService.save(item);
 		return item;
 	}
