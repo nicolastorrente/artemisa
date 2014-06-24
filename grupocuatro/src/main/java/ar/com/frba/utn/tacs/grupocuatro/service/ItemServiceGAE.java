@@ -16,7 +16,7 @@ public class ItemServiceGAE implements ItemService{
 	@Autowired
 	private ListService listService;
 	@Autowired
-	private OfyService ofyService;
+	public OfyService ofyService;
 
 	public ItemServiceGAE() {
 	}
