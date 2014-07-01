@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
+import org.junit.Rule;
+import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +19,7 @@ public class ListServiceGAE implements ListService {
 	@Autowired
 	private UserService userService;
 	@Autowired
-	private OfyService ofyService;
+	public OfyService ofyService;
 
 	public boolean exists(final List<List_G4> lists, final List_G4 list){
 		return CollectionUtils.exists(lists, new Predicate() {
