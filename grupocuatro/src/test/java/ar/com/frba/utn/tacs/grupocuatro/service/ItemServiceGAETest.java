@@ -16,7 +16,7 @@ import org.mockito.stubbing.Answer;
 
 import ar.com.frba.utn.tacs.grupocuatro.domain.Item_G4;
 import ar.com.frba.utn.tacs.grupocuatro.domain.User_G4;
-import ar.com.frba.utn.tacs.grupocuatro.exceptions.ItemAlreadyExistsException;
+import ar.com.frba.utn.tacs.grupocuatro.exceptions.*;
 
 public class ItemServiceGAETest {
 	
@@ -28,6 +28,7 @@ public class ItemServiceGAETest {
 	
 	Long idItemInexistente = 4L;
 	Long idItemExistente = 3L;
+	Long idList = 11L;
 	Item_G4 itemInexistente;
 	Item_G4 itemExistente;
 	List<Item_G4> itemsExistentes = new ArrayList<Item_G4>();
@@ -48,16 +49,17 @@ public class ItemServiceGAETest {
 		
 		itemInexistente = new Item_G4();
 		itemInexistente.setId(idItemInexistente);
+		itemInexistente.setListId(idList);
 		itemInexistente.setLabel("soy un item que no existe");
 		
 		itemExistente = new Item_G4();
 		itemExistente.setId(idItemExistente);
+		itemExistente.setListId(idList);
 		itemExistente.setLabel("soy un item que existe!");
 		
 		itemsExistentes.add(itemExistente);
 		
-		when(mockOfiServ.filter(Item_G4.class, "listId", idItemExistente)).thenReturn(itemsExistentes);
-		when(mockOfiServ.filter(Item_G4.class, "listId", idItemInexistente)).thenReturn(null);
+		when(mockOfiServ.filter(Item_G4.class, "listId", idList)).thenReturn(itemsExistentes);
 		when(mockOfiServ.find(Item_G4.class, itemExistente.getId())).thenReturn(itemExistente);
 		itemService.ofyService = mockOfiServ;
 	}
@@ -70,7 +72,7 @@ public class ItemServiceGAETest {
 	@Test
 	public void createUnItemqueExisteYRetornaExcepcion(){
 		exception.expect(ItemAlreadyExistsException.class);
-		itemService.create(idItemExistente, itemExistente);
+		itemService.create(idList, itemExistente);
 	}
 	
 	@Test
@@ -81,10 +83,18 @@ public class ItemServiceGAETest {
 		assertEquals(cantidadvotos, itemvotado.getVotes());
 	}
 	
-	/*TODO: votar un item 2 veces y que no incremente mas de 1*/
+	@Test
+	public void votar2VecesItemExistentente(){
+		itemExistente.getVotes();
+		itemService.voteItem(itemExistente.getId());
+		exception.expect(UserAlreadyVoteException.class);
+		itemService.voteItem(itemExistente.getId());
+	}
 	
-	/*TODO: eliminar un item existente y que lo borre */
-	
-	/*TODO: eliminar un item inexistente y que la cantidad de items permanezca constante*/
-	
+	@Test
+	public void eliminarUnItemInexistenteDeUnaLista(){
+		int cantItems = itemService.getItemsFromList(itemExistente.getListId()).size();
+		itemService.delete(itemInexistente.getId());
+		assertEquals(cantItems, itemService.getItemsFromList(itemExistente.getListId()).size());
+	}
 }
