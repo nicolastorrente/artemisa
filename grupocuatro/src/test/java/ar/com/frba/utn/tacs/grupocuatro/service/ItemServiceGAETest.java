@@ -1,29 +1,29 @@
 package ar.com.frba.utn.tacs.grupocuatro.service;
 
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.mockito.stubbing.Answer;
 
 import ar.com.frba.utn.tacs.grupocuatro.domain.Item_G4;
+import ar.com.frba.utn.tacs.grupocuatro.domain.List_G4;
 import ar.com.frba.utn.tacs.grupocuatro.domain.User_G4;
-import ar.com.frba.utn.tacs.grupocuatro.exceptions.*;
+import ar.com.frba.utn.tacs.grupocuatro.exceptions.ItemAlreadyExistsException;
+import ar.com.frba.utn.tacs.grupocuatro.exceptions.UserAlreadyVoteException;
 
 public class ItemServiceGAETest {
 	
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
 	
-	private ItemServiceGAE itemService = new ItemServiceGAE();
+	private ItemServiceGAE itemService;
 	private UserServiceGAE uService = new UserServiceGAE();
 	
 	Long idItemInexistente = 4L;
@@ -33,6 +33,9 @@ public class ItemServiceGAETest {
 	Item_G4 itemExistente;
 	List<Item_G4> itemsExistentes = new ArrayList<Item_G4>();
 	
+	OfyService mockOfiServ;
+	ListService listService;
+	
 	User_G4 usuarioExistente;
 
 	@Before
@@ -40,7 +43,9 @@ public class ItemServiceGAETest {
 		usuarioExistente = new User_G4();
 		usuarioExistente.setUsername("Manteca Martinez");
 		
-		OfyService mockOfiServ = mock(OfyService.class);
+		mockOfiServ = mock(OfyService.class);
+		listService = mock(ListService.class);
+		itemService = new ItemServiceGAE(listService, mockOfiServ);
 		//cuando intente buscar el el Usuario con id 3 retornara El usuario con id 3
 		when(mockOfiServ.find(User_G4.class, usuarioExistente.getId())).thenReturn(usuarioExistente);
 		uService.ofyService = mockOfiServ;
@@ -66,7 +71,18 @@ public class ItemServiceGAETest {
 	
 	@Test
 	public void createUnItemqueNoExiste(){
-		assertEquals(itemService.create(idItemInexistente, itemInexistente), itemInexistente);
+		Item_G4 item = new Item_G4();
+		item.setId(idItemInexistente);
+		item.setListId(idList);
+		item.setLabel("soy un item que no existe");
+		List_G4 list = mock(List_G4.class);
+		Long idUser = 254235l;
+		when(list.getUserId()).thenReturn(idUser);
+		when(listService.getListById(idList)).thenReturn(list);
+		User_G4 loggedUser = mock(User_G4.class);
+		when(loggedUser.getId()).thenReturn(idUser);
+		UserServiceGAE.setLoggedUser(loggedUser);
+		assertEquals(itemService.create(idList, item), itemInexistente);
 	}
 	
 	@Test

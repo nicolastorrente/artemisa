@@ -74,5 +74,42 @@ public class Item_G4 extends BusinessObject{
 	public void setListId(Long listId) {
 		this.listId = listId;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((label == null) ? 0 : label.hashCode());
+		result = prime * result + ((listId == null) ? 0 : listId.hashCode());
+		result = prime * result + ((votes == null) ? 0 : votes.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Item_G4 other = (Item_G4) obj;
+		if (label == null) {
+			if (other.label != null)
+				return false;
+		} else if (!label.equals(other.label))
+			return false;
+		if (listId == null) {
+			if (other.listId != null)
+				return false;
+		} else if (!listId.equals(other.listId))
+			return false;
+		if (votes == null) {
+			if (other.votes != null)
+				return false;
+		} else if (!votes.equals(other.votes))
+			return false;
+		return true;
+	}
 	
 }

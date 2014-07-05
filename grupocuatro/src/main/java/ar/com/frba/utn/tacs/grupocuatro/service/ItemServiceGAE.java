@@ -23,6 +23,11 @@ public class ItemServiceGAE implements ItemService{
 	@Autowired
 	public OfyService ofyService;
 
+	public ItemServiceGAE(ListService listService, OfyService ofyService) {
+		this.listService = listService;
+		this.ofyService = ofyService;
+	}
+	
 	public ItemServiceGAE() {
 	}
 	

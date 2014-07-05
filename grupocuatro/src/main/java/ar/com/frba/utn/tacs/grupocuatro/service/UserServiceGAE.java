@@ -49,6 +49,10 @@ public class UserServiceGAE implements UserService {
 		return loggedUser;
 	}
 	
+	public static void setLoggedUser(User_G4 user){
+		loggedUser = user;
+	}
+	
 	@Override
 	public List<User_G4> getAll() {
 		return this.friends;
