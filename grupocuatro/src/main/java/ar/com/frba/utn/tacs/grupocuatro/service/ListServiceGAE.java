@@ -4,13 +4,12 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
-import org.junit.Rule;
-import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.com.frba.utn.tacs.grupocuatro.domain.List_G4;
 import ar.com.frba.utn.tacs.grupocuatro.exceptions.ListAlreadyExistsException;
+import ar.com.frba.utn.tacs.grupocuatro.exceptions.ListNotYoursException;
 import ar.com.frba.utn.tacs.grupocuatro.exceptions.ObjectNotFoundException;
 
 @Service
@@ -35,6 +34,9 @@ public class ListServiceGAE implements ListService {
 		List<List_G4> listsUser = this.getListsFromUser(id_user);
 		if(this.exists(listsUser, list)){
 			throw new ListAlreadyExistsException("En la lista ya existe una con ese nombre");
+		}
+		if(!UserServiceGAE.getLoggedUser().getId().equals(id_user)){
+			throw new ListNotYoursException("No podés crearle una lista a un amigo");
 		}
 		list.setUserId(id_user);
 		ofyService.save(list);

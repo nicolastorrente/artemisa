@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import ar.com.frba.utn.tacs.grupocuatro.domain.List_G4;
 import ar.com.frba.utn.tacs.grupocuatro.exceptions.ListAlreadyExistsException;
+import ar.com.frba.utn.tacs.grupocuatro.exceptions.ListNotYoursException;
 import ar.com.frba.utn.tacs.grupocuatro.exceptions.ObjectNotFoundException;
 import ar.com.frba.utn.tacs.grupocuatro.service.ListService;
 
@@ -61,15 +62,19 @@ public class ListController {
 	 * @return List_G4
 	 * @HTTP status 400: cuando no se encuentra el usuario enviado por parámetro
 	 * @HTTP status: 406 Si ya existe el nombre de lista enviado 
+	 * @HTTP status: 403 Si se intenta crear una lista a otro usuario
 	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody ResponseEntity<List_G4> createList(@PathVariable Long id_user, @RequestBody List_G4 list) {
 		try{
 			return new ResponseEntity<List_G4>(this.listService.create(id_user, list),HttpStatus.OK);
+		}catch(ListNotYoursException e){
+			return new ResponseEntity<List_G4>(HttpStatus.FORBIDDEN);
 		}catch(ListAlreadyExistsException e){
 			return new ResponseEntity<List_G4>(HttpStatus.NOT_ACCEPTABLE);
 		}catch(ObjectNotFoundException e){
 			return new ResponseEntity<List_G4>(HttpStatus.NOT_FOUND);
+			
 		}
 	}
 
