@@ -48,9 +48,12 @@ public class ItemServiceGAE implements ItemService{
 		}
 		item.setListId(id_list);
 		List_G4 list = listService.getListById(id_list);
-		if(!UserServiceGAE.getLoggedUser().getId().equals(list.getUserId())){
+		
+		Long loggedId = UserServiceGAE.getLoggedUser().getId();
+		
+		if(!loggedId.equals(list.getUserId())){
 			userService.sendNotification(list.getUserId().toString(),
-					"Han agregado el item " + item.getLabel() + " a tu lista " + list.getName());
+					"@[" + loggedId.toString() + "] agregó " + item.getLabel() + " a tu lista " + list.getName());
 		}
 		ofyService.save(item);
 		return item;

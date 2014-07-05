@@ -18,6 +18,7 @@ import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.FacebookClient.AccessToken;
 import com.restfb.Parameter;
+import com.restfb.exception.FacebookGraphException;
 import com.restfb.exception.FacebookOAuthException;
 import com.restfb.types.FacebookType;
 import com.restfb.types.User;
@@ -106,14 +107,17 @@ public class UserServiceGAE implements UserService {
 	public void sendNotification(String externalUserId, String message) {
 	    try {
 	    	AccessToken appAccessToken = new DefaultFacebookClient().obtainAppAccessToken(APP_ID, APP_SECRET);
-		    FacebookClient fc = new DefaultFacebookClient(appAccessToken.getAccessToken());	    	
-		    fc.publish(externalUserId + "/notifications", FacebookType.class, Parameter.with("template", message));	
+		    FacebookClient fc = new DefaultFacebookClient(appAccessToken.getAccessToken());
+		    
+		    fc.publish("/" + externalUserId + "/notifications", FacebookType.class, Parameter.with("template", message));	
 	    } catch (FacebookOAuthException e) {
 	        if (e.getErrorCode() == 200) {
 	        	throw new ObjectNotFoundException("No se encontro el usuario");
 	        } else if (e.getErrorCode() == 100) {
 	        	throw new NotificationException("El mensaje no puede tener más que 180 caracteres");
 	        }
+	    } catch (FacebookGraphException e) {
+	    	//Por un problema de permisos no puedo notificar
 	    }
 	}	
 }

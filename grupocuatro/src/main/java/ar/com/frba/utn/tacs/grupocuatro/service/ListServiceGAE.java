@@ -32,12 +32,13 @@ public class ListServiceGAE implements ListService {
 	@Override
 	public List_G4 create(Long id_user, List_G4 list) {
 		List<List_G4> listsUser = this.getListsFromUser(id_user);
-		if(this.exists(listsUser, list)){
-			throw new ListAlreadyExistsException("En la lista ya existe una con ese nombre");
-		}
-		if(!UserServiceGAE.getLoggedUser().getId().equals(id_user)){
+		
+		if(!UserServiceGAE.getLoggedUser().getId().equals(id_user))
 			throw new ListNotYoursException("No podés crearle una lista a un amigo");
-		}
+			
+		if(this.exists(listsUser, list))
+			throw new ListAlreadyExistsException("En la lista ya existe una con ese nombre");
+			
 		list.setUserId(id_user);
 		ofyService.save(list);
 		return list;
